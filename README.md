@@ -26,3 +26,5 @@
 ### Comandos
 
 - Android Studio / Menu / Run / Run 'app'
+
+#### stop part 2 

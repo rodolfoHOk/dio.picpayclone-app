@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features
+package br.com.dio.picpaycloneapp.features.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

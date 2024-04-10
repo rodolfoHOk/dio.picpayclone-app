@@ -22,6 +22,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import br.com.dio.picpaycloneapp.features.home.HomeScreen
+import br.com.dio.picpaycloneapp.features.login.LoginScreen
 import br.com.dio.picpaycloneapp.ui.theme.PicPayCloneAppTheme
 
 class MainActivity : ComponentActivity() {
