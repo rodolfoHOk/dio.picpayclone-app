@@ -5,12 +5,14 @@
 - Kotlin
 - Android
 - JetPack Compose
-- View Model
+- ViewModel
+- Hilt (Dependency Injection)
 
 ### Bibliotecas adicionais
 
 - androidx.navigation:navigation-compose
 - androidx.compose.material:material
+- com.google.dagger:hilt-android
 
 ## Telas
 
@@ -26,5 +28,3 @@
 ### Comandos
 
 - Android Studio / Menu / Run / Run 'app'
-
-#### stop part 2 

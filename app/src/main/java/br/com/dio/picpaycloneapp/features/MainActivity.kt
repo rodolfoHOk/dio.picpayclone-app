@@ -25,7 +25,9 @@ import androidx.navigation.compose.rememberNavController
 import br.com.dio.picpaycloneapp.features.home.HomeScreen
 import br.com.dio.picpaycloneapp.features.login.LoginScreen
 import br.com.dio.picpaycloneapp.ui.theme.PicPayCloneAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
