@@ -11,19 +11,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.dio.picpaycloneapp.ui.components.ContactItem
 
 @Composable
 fun PaymentScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            modifier = Modifier.fillMaxSize()
         ) {
             Text(
                 text = "Contatos",
-                style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
             )
+
+            ContactItem(username = "joaovf", name = "João Vitor Freitas")
         }
     }
 }
