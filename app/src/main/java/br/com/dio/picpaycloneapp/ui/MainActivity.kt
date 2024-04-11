@@ -16,8 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
-import br.com.dio.picpaycloneapp.ui.login.LoginUiAction
-import br.com.dio.picpaycloneapp.ui.login.LoginViewModel
+import br.com.dio.picpaycloneapp.ui.screens.login.LoginUiAction
+import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 import br.com.dio.picpaycloneapp.ui.theme.PicPayCloneAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

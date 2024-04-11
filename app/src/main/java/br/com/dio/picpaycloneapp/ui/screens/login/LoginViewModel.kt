@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.ui.login
+package br.com.dio.picpaycloneapp.ui.screens.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

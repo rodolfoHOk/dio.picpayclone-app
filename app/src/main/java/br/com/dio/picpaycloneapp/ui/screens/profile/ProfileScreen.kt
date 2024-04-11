@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.ui.profile
+package br.com.dio.picpaycloneapp.ui.screens.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

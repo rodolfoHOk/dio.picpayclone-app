@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.components
+package br.com.dio.picpaycloneapp.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.ui.login
+package br.com.dio.picpaycloneapp.ui.screens.login
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.dio.picpaycloneapp.R
-import br.com.dio.picpaycloneapp.components.StyledTextField
+import br.com.dio.picpaycloneapp.ui.components.StyledTextField
 
 @Composable
 fun LoginScreen(

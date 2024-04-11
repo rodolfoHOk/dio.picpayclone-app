@@ -6,9 +6,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import br.com.dio.picpaycloneapp.ui.home.HomeScreen
-import br.com.dio.picpaycloneapp.ui.payment.PaymentScreen
-import br.com.dio.picpaycloneapp.ui.profile.ProfileScreen
+import br.com.dio.picpaycloneapp.ui.screens.home.HomeScreen
+import br.com.dio.picpaycloneapp.ui.screens.payment.PaymentScreen
+import br.com.dio.picpaycloneapp.ui.screens.profile.ProfileScreen
 
 @Composable
 fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: () -> Unit) {
