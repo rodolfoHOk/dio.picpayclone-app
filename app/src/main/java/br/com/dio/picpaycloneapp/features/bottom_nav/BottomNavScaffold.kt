@@ -1,0 +1,18 @@
+package br.com.dio.picpaycloneapp.features.bottom_nav
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+
+@Composable
+fun BottomNavScaffold(navController: NavController, logout: () -> Unit) {
+    Scaffold(
+        bottomBar = {
+            BottomNavBar(navController)
+        }
+    ) { paddingValues ->
+        BottomNavHost(navController, Modifier.padding(paddingValues), logout)
+    }
+}

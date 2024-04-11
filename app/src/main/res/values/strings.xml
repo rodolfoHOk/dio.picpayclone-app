@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">PicPayCloneApp</string>
-    <string name="home">Home</string>
     <string name="login">Login</string>
+    <string name="bottom_nav_screens">Screens with bottom navigation</string>
+    <string name="home">Home</string>
+    <string name="payment">Pagar</string>
+    <string name="profile">Perfil</string>
 </resources>
