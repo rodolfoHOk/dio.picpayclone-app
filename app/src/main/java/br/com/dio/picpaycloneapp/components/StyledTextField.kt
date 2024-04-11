@@ -7,17 +7,15 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import br.com.dio.picpaycloneapp.R
 
 @Composable
 fun StyledTextField(
@@ -36,22 +34,23 @@ fun StyledTextField(
             PasswordVisualTransformation()
         else VisualTransformation.None,
         label = {
-            Text(
-                label, style = TextStyle(color = colorResource(id = R.color.colorPrimaryDark))
-            )
+            Text(label)
         },
         value = value,
         onValueChange = onValueChange,
         maxLines = 1,
         textStyle = TextStyle(fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color.White,
-            focusedIndicatorColor = colorResource(id = R.color.colorPrimaryDark),
-            unfocusedIndicatorColor = colorResource(id = R.color.gray),
-            placeholderColor = colorResource(id = R.color.colorPrimaryDark),
-            cursorColor = colorResource(id = R.color.colorPrimaryDark),
+            backgroundColor = MaterialTheme.colorScheme.background,
+            focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.surface,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.tertiary,
         )
     )
 }
