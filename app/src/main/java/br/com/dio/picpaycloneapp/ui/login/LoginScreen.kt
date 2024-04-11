@@ -1,6 +1,6 @@
 package br.com.dio.picpaycloneapp.ui.login
 
-import androidx.compose.animation.animateColorAsState
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,44 +9,36 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.dio.picpaycloneapp.R
 import br.com.dio.picpaycloneapp.components.StyledTextField
-import br.com.dio.picpaycloneapp.data.LoggedUser
-import br.com.dio.picpaycloneapp.data.User
-import br.com.dio.picpaycloneapp.ui.MainNavScreen
 
 @Composable
-fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = viewModel()) {
-    var username by remember { mutableStateOf("") } // temp: to viewmodel
-    var password by remember { mutableStateOf("") } // temp: to viewmodel
+fun LoginScreen(
+    loginViewModel: LoginViewModel = viewModel(
+        viewModelStoreOwner = LocalContext.current as ComponentActivity
+    )
+) {
+
+    val loginUiState = loginViewModel.state.collectAsState()
 
     fun onLoginClick() {
-        LoggedUser.user = User(login = "joaovf")
-        navController.navigate(MainNavScreen.BottomNavScreens.route) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
-            }
-            launchSingleTop = true
-        }
+        loginViewModel.login()
     }
 
     Box(
@@ -68,14 +60,14 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
 
             StyledTextField(
                 label = "Usuário",
-                value = username,
-                onValueChange = { username = it }
+                value = loginViewModel.username,
+                onValueChange = { loginViewModel.updateUsername(it) }
             )
 
             StyledTextField(
                 label = "Senha",
-                value = password,
-                onValueChange = { password = it },
+                value = loginViewModel.password,
+                onValueChange = { loginViewModel.updatePassword(it) },
                 keyboardType = KeyboardType.Password
             )
 
@@ -89,7 +81,10 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                 ),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text(text = "Entrar".uppercase())
+                if (loginUiState.value.isLoading)
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                else
+                    Text(text = "Entrar".uppercase())
             }
         }
     }
