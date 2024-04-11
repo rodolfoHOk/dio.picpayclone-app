@@ -8,10 +8,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import br.com.dio.picpaycloneapp.data.LoggedUser
 
 @Composable
-fun HomeScreen(logout: () -> Unit) {
-    logout()
+fun HomeScreen(goToLogin: () -> Unit) {
+    if (LoggedUser.isNotLoggedUser()) {
+        goToLogin()
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(

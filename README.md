@@ -28,3 +28,5 @@
 ### Comandos
 
 - Android Studio / Menu / Run / Run 'app'
+
+#### stop parte 5 até o final

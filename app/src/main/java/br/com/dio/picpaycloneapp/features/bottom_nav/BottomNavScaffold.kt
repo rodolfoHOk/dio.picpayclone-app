@@ -7,12 +7,16 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun BottomNavScaffold(navController: NavController, logout: () -> Unit) {
+fun BottomNavScaffold(navController: NavController, goToLogin: () -> Unit) {
     Scaffold(
         bottomBar = {
-            BottomNavBar(navController)
+            BottomNavBar(navController = navController)
         }
     ) { paddingValues ->
-        BottomNavHost(navController, Modifier.padding(paddingValues), logout)
+        BottomNavHost(
+            navController = navController,
+            modifier = Modifier.padding(paddingValues),
+            goToLogin = goToLogin
+        )
     }
 }

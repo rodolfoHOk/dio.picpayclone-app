@@ -24,14 +24,29 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.dio.picpaycloneapp.R
 import br.com.dio.picpaycloneapp.components.StyledTextField
+import br.com.dio.picpaycloneapp.data.LoggedUser
+import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.features.MainNavScreen
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = viewModel()) {
     var username by remember { mutableStateOf("") } // temp: to viewmodel
     var password by remember { mutableStateOf("") } // temp: to viewmodel
+
+    fun onLoginClick() {
+        LoggedUser.user = User(login = "joaovf")
+        navController.navigate(MainNavScreen.BottomNavScreens.route) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -64,7 +79,7 @@ fun LoginScreen(navController: NavController) {
             )
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { onLoginClick() },
                 Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),

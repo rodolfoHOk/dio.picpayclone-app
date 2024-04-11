@@ -11,13 +11,13 @@ import br.com.dio.picpaycloneapp.features.bottom_nav.payment.PaymentScreen
 import br.com.dio.picpaycloneapp.features.bottom_nav.profile.ProfileScreen
 
 @Composable
-fun BottomNavHost(navController: NavController, modifier: Modifier, logout: () -> Unit) {
+fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: () -> Unit) {
     NavHost(
         navController = navController as NavHostController,
         startDestination = BottomNavScreen.Home.route,
         modifier = modifier
     ) {
-        composable(BottomNavScreen.Home.route) { HomeScreen(logout) }
+        composable(BottomNavScreen.Home.route) { HomeScreen(goToLogin = goToLogin) }
         composable(BottomNavScreen.Payment.route) { PaymentScreen() }
         composable(BottomNavScreen.Profile.route) { ProfileScreen() }
     }

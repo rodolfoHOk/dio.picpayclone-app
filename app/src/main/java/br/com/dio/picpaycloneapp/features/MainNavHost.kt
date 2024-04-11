@@ -11,17 +11,22 @@ import br.com.dio.picpaycloneapp.features.login.LoginScreen
 
 @Composable
 fun MainNavHost(mainNavController: NavHostController, bottomBarNavController: NavHostController) {
+
+    fun goToLogin() {
+        mainNavController.navigate(MainNavScreen.Login.route)
+    }
+
     NavHost(
         navController = mainNavController,
         startDestination = MainNavScreen.BottomNavScreens.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(MainNavScreen.Login.route) {
-            LoginScreen(mainNavController)
+            LoginScreen(navController = mainNavController)
         }
         composable(MainNavScreen.BottomNavScreens.route) {
             BottomNavScaffold(navController = bottomBarNavController) {
-                mainNavController.navigate(MainNavScreen.Login.route)
+                goToLogin()
             }
         }
     }
