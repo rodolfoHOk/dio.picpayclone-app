@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features.bottom_nav.home
+package br.com.dio.picpaycloneapp.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

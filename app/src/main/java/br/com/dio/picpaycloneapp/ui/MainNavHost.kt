@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features
+package br.com.dio.picpaycloneapp.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import br.com.dio.picpaycloneapp.features.bottom_nav.BottomNavScaffold
-import br.com.dio.picpaycloneapp.features.login.LoginScreen
+import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScaffold
+import br.com.dio.picpaycloneapp.ui.login.LoginScreen
 
 @Composable
 fun MainNavHost(mainNavController: NavHostController, bottomBarNavController: NavHostController) {

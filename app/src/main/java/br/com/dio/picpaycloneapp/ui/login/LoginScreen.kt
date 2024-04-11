@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features.login
+package br.com.dio.picpaycloneapp.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,7 +31,7 @@ import br.com.dio.picpaycloneapp.R
 import br.com.dio.picpaycloneapp.components.StyledTextField
 import br.com.dio.picpaycloneapp.data.LoggedUser
 import br.com.dio.picpaycloneapp.data.User
-import br.com.dio.picpaycloneapp.features.MainNavScreen
+import br.com.dio.picpaycloneapp.ui.MainNavScreen
 
 @Composable
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = viewModel()) {

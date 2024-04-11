@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features
+package br.com.dio.picpaycloneapp.ui
 
 import androidx.annotation.StringRes
 import br.com.dio.picpaycloneapp.R

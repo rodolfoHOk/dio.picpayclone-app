@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features.bottom_nav.payment
+package br.com.dio.picpaycloneapp.ui.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,14 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun PaymentScreen() {
+fun ProfileScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Payment")
+            Text(text = "Profile")
         }
     }
 }

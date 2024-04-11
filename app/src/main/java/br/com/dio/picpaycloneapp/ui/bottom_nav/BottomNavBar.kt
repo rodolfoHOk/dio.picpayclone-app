@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features.bottom_nav
+package br.com.dio.picpaycloneapp.ui.bottom_nav
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem

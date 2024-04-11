@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features.login
+package br.com.dio.picpaycloneapp.ui.login
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

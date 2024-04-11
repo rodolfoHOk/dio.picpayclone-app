@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.features
+package br.com.dio.picpaycloneapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
