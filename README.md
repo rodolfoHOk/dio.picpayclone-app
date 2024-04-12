@@ -7,12 +7,16 @@
 - JetPack Compose
 - ViewModel
 - Hilt (Dependency Injection)
+- Retrofit (Http Requests)
 
 ### Bibliotecas adicionais
 
 - androidx.navigation:navigation-compose
 - androidx.compose.material:material
 - com.google.dagger:hilt-android
+- com.google.code.gson:gson
+- com.squareup.retrofit2:retrofit
+- com.squareup.retrofit2:converter-gson
 
 ## Telas
 

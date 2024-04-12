@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,42 +37,49 @@ class MainActivity : ComponentActivity() {
                 val scope = rememberCoroutineScope()
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                Scaffold(
-                    snackbarHost = {
+                CompositionLocalProvider(
+                    value = LocalSnackbarHostState provides snackbarHostState
+                ) {
+                    Scaffold(snackbarHost = {
                         SnackbarHost(hostState = snackbarHostState)
-                    }
-                ) { paddingValues ->
-                    val lifecycleOwner = LocalLifecycleOwner.current
-                    val lifecycle = remember(lifecycleOwner) { lifecycleOwner.lifecycle }
+                    }) { paddingValues ->
+                        val lifecycleOwner = LocalLifecycleOwner.current
+                        val lifecycle = remember(lifecycleOwner) { lifecycleOwner.lifecycle }
 
-                    LaunchedEffect(lifecycle) {
-                        lifecycleScope.launch {
-                            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                                loginViewModel.action.collect { action ->
-                                    when (action) {
-                                        is LoginUiAction.LoginSuccess -> {
-                                            mainNavController.navigate(MainNavScreen.BottomNavScreens.route) {
-                                                popUpTo(mainNavController.graph.findStartDestination().id) {
-                                                    saveState = true
+                        LaunchedEffect(lifecycle) {
+                            lifecycleScope.launch {
+                                lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                                    loginViewModel.action.collect { action ->
+                                        when (action) {
+                                            is LoginUiAction.LoginSuccess -> {
+                                                mainNavController.navigate(
+                                                    MainNavScreen.BottomNavScreens.route
+                                                ) {
+                                                    popUpTo(
+                                                        mainNavController.graph
+                                                            .findStartDestination().id
+                                                    ) {
+                                                        saveState = true
+                                                    }
+                                                    launchSingleTop = true
                                                 }
-                                                launchSingleTop = true
                                             }
-                                        }
 
-                                        is LoginUiAction.LoginError -> scope.launch {
-                                            snackbarHostState.showSnackbar(action.message)
+                                            is LoginUiAction.LoginError -> scope.launch {
+                                                snackbarHostState.showSnackbar(action.message)
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    MainNavHost(
-                        mainNavController = mainNavController,
-                        bottomBarNavController = bottomBarNavController,
-                        paddingValues = paddingValues
-                    )
+                        MainNavHost(
+                            mainNavController = mainNavController,
+                            bottomBarNavController = bottomBarNavController,
+                            paddingValues = paddingValues
+                        )
+                    }
                 }
             }
         }

@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -16,31 +18,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.ContactItem
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 @Composable
-fun PaymentScreen(navController: NavController) {
-    val users: List<User> = listOf(
-        User(
-            login = "joaovf",
-            completeName = "João Vitor Freitas",
-            balance = 500.00
-        ),
-        User(
-            login = "cicerom",
-            completeName = "Cícero Moura",
-            balance = 300.00
-        ),
-        User(
-            login = "jpauloa",
-            completeName = "Jośe Paulo Alencar",
-            balance = 100.00,
-        )
-    )
+fun PaymentScreen(navController: NavController, paymentViewModel: PaymentViewModel) {
+    val paymentUiState = paymentViewModel.state.collectAsState()
+    val userContacts = paymentUiState.value.contacts
 
-    val gson = Gson()
+    val gson: Gson = GsonBuilder().create()
+
+    val snackbarHostState = LocalSnackbarHostState.current
+    LaunchedEffect(Unit) {
+        paymentViewModel.action.collect { action ->
+            when(action) {
+                is PaymentUiAction.ContactsError -> {
+                    snackbarHostState.showSnackbar(action.message)
+                }
+            }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -56,10 +56,11 @@ fun PaymentScreen(navController: NavController) {
                 modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                items(users) { user ->
+                items(userContacts) { user ->
                     ContactItem(username = user.login, completeName = user.completeName) {
+                        val userJson = gson.toJson(user, User::class.java)
                         navController.navigate(
-                            "${BottomNavScreen.Transaction.route}/${gson.toJson(user)}"
+                            "${BottomNavScreen.Transaction.route}/$userJson"
                         )
                     }
                 }

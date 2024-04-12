@@ -35,19 +35,15 @@ import br.com.dio.picpaycloneapp.R
 import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField
-import com.google.gson.Gson
 import java.text.DecimalFormat
 
 @Composable
 fun TransactionScreen(
     navController: NavController,
-    destinationUser: String?,
+    destinationUser: User?,
     transactionViewModel: TransactionViewModel = viewModel()
 ) {
     destinationUser?.let {
-        val gson = Gson()
-        val user: User = gson.fromJson(destinationUser, User::class.java)
-
         val transactionUiState = transactionViewModel.state.collectAsState()
 
         val decimalFormat = DecimalFormat("#,###.00")
@@ -68,13 +64,13 @@ fun TransactionScreen(
 
                         Column {
                             Text(
-                                text = user.login,
+                                text = destinationUser.login,
                                 style = TextStyle(fontWeight = FontWeight.Bold),
                                 modifier = Modifier.padding(top = 18.dp, start = 8.dp)
                             )
 
                             Text(
-                                text = user.completeName,
+                                text = destinationUser.completeName,
                                 modifier = Modifier.padding(top = 4.dp, start = 8.dp)
                             )
 
@@ -210,7 +206,7 @@ fun TransactionScreen(
                             )
 
                             Text(
-                                text = "R$ ${decimalFormat.format(user.balance)}",
+                                text = "R$ ${decimalFormat.format(destinationUser.balance)}",
                                 modifier = Modifier.padding(start = 16.dp),
                                 style = TextStyle(
                                     fontWeight = FontWeight.SemiBold,

@@ -13,11 +13,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransactionViewModel @Inject constructor() : ViewModel() {
+
     private val _state = MutableStateFlow(TransactionUiState())
-    val state : StateFlow<TransactionUiState> = _state
+    val state: StateFlow<TransactionUiState> = _state
 
     private val _action = MutableSharedFlow<TransactionUiAction>()
-    val action : SharedFlow<TransactionUiAction> = _action
+    val action: SharedFlow<TransactionUiAction> = _action
 
     fun updateAmount(amount: String) {
         if (amount.length <= 12) {
@@ -84,7 +85,7 @@ data class TransactionUiState(
     val cardNumber: String = "",
     val holderName: String = "",
     val expirationDate: String = "",
-    val securityCode: String = "",
+    val securityCode: String = ""
 )
 
 sealed interface TransactionUiAction {
