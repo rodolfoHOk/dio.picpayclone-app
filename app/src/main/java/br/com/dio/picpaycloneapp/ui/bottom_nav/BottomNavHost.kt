@@ -30,12 +30,12 @@ fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: (
             ProfileScreen()
         }
         composable(
-            route = "${BottomNavScreen.Transaction.route}/{destinationLogin}",
-            arguments = listOf(navArgument("destinationLogin") { type = NavType.StringType })
+            route = "${BottomNavScreen.Transaction.route}/{destinationUser}",
+            arguments = listOf(navArgument("destinationUser") { type = NavType.StringType })
         ) { navBackStackEntry ->
             TransactionScreen(
                 navController = navController,
-                destinationLogin = navBackStackEntry.arguments?.getString("destinationLogin")
+                destinationUser = navBackStackEntry.arguments?.getString("destinationUser")
             )
         }
     }

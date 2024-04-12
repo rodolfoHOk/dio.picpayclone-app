@@ -35,25 +35,22 @@ import br.com.dio.picpaycloneapp.R
 import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField
+import com.google.gson.Gson
 import java.text.DecimalFormat
 
 @Composable
 fun TransactionScreen(
     navController: NavController,
-    destinationLogin: String?,
+    destinationUser: String?,
     transactionViewModel: TransactionViewModel = viewModel()
 ) {
-    destinationLogin?.let {
+    destinationUser?.let {
+        val gson = Gson()
+        val user: User = gson.fromJson(destinationUser, User::class.java)
 
         val transactionUiState = transactionViewModel.state.collectAsState()
 
         val decimalFormat = DecimalFormat("#,###.00")
-
-        val user: User = User(
-            login = destinationLogin,
-            completeName = "João Vitor Freitas",
-            balance = 500.00
-        )
 
         Box(modifier = Modifier.fillMaxSize()) {
             Column(

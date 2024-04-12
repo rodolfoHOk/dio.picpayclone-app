@@ -45,7 +45,11 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         }
 
         if (username == "joaovf") {
-            LoggedUser.user = User(login = username)
+            LoggedUser.user = User(
+                login = username,
+                completeName = "João Vitor Freitas",
+                balance = 500.00,
+            )
             sendAction(LoginUiAction.LoginSuccess("Login efetuado com sucesso!"))
             return
         }

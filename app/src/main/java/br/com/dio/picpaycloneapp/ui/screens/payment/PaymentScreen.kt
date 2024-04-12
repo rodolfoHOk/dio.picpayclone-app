@@ -18,14 +18,29 @@ import androidx.navigation.NavController
 import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.ContactItem
+import com.google.gson.Gson
 
 @Composable
 fun PaymentScreen(navController: NavController) {
     val users: List<User> = listOf(
-        User(login = "joaovf", completeName = "João Vitor Freitas"),
-        User(login = "cicerom", completeName = "Cícero Moura"),
-        User(login = "jpauloa", completeName = "Jośe Paulo Alencar")
+        User(
+            login = "joaovf",
+            completeName = "João Vitor Freitas",
+            balance = 500.00
+        ),
+        User(
+            login = "cicerom",
+            completeName = "Cícero Moura",
+            balance = 300.00
+        ),
+        User(
+            login = "jpauloa",
+            completeName = "Jośe Paulo Alencar",
+            balance = 100.00,
+        )
     )
+
+    val gson = Gson()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -43,8 +58,9 @@ fun PaymentScreen(navController: NavController) {
             ) {
                 items(users) { user ->
                     ContactItem(username = user.login, completeName = user.completeName) {
-                        navController
-                            .navigate("${BottomNavScreen.Transaction.route}/${user.login}")
+                        navController.navigate(
+                            "${BottomNavScreen.Transaction.route}/${gson.toJson(user)}"
+                        )
                     }
                 }
             }
