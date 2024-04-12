@@ -29,14 +29,18 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     val action: SharedFlow<LoginUiAction> = _action
 
     fun updateUsername(username: String) {
-        _state.update { currentState ->
-            currentState.copy(username = username)
+        if (username.length <= 255) {
+            _state.update { currentState ->
+                currentState.copy(username = username)
+            }
         }
     }
 
     fun updatePassword(password: String) {
-        _state.update { currentState ->
-            currentState.copy(password = password)
+        if (password.length <= 255) {
+            _state.update { currentState ->
+                currentState.copy(password = password)
+            }
         }
     }
 

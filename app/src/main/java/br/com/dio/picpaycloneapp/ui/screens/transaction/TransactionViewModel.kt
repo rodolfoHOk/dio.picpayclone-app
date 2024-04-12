@@ -20,8 +20,10 @@ class TransactionViewModel @Inject constructor() : ViewModel() {
     val action : SharedFlow<TransactionUiAction> = _action
 
     fun updateAmount(amount: String) {
-        _state.update { currentState ->
-            currentState.copy(amount = amount)
+        if (amount.length <= 12) {
+            _state.update { currentState ->
+                currentState.copy(amount = amount)
+            }
         }
     }
 
@@ -32,26 +34,34 @@ class TransactionViewModel @Inject constructor() : ViewModel() {
     }
 
     fun updateCardNumber(cardNumber: String) {
-        _state.update { currentState ->
-            currentState.copy(cardNumber = cardNumber)
+        if (cardNumber.length <= 16) {
+            _state.update { currentState ->
+                currentState.copy(cardNumber = cardNumber)
+            }
         }
     }
 
     fun updateHolderName(holderName: String) {
-        _state.update { currentState ->
-            currentState.copy(holderName = holderName)
+        if (holderName.length <= 255) {
+            _state.update { currentState ->
+                currentState.copy(holderName = holderName)
+            }
         }
     }
 
     fun updateExpirationDate(expirationDate: String) {
-        _state.update { currentState ->
-            currentState.copy(expirationDate = expirationDate)
+        if (expirationDate.length <= 6) {
+            _state.update { currentState ->
+                currentState.copy(expirationDate = expirationDate)
+            }
         }
     }
 
     fun updateSecurityCode(securityCode: String) {
-        _state.update { currentState ->
-            currentState.copy(securityCode = securityCode)
+        if (securityCode.length <= 3) {
+            _state.update { currentState ->
+                currentState.copy(securityCode = securityCode)
+            }
         }
     }
 
