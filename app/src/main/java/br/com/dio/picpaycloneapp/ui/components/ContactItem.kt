@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -21,13 +22,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import br.com.dio.picpaycloneapp.R
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ContactItem(username: String, completeName: String) {
+fun ContactItem(username: String, completeName: String, onContactClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 2.dp,
         modifier = Modifier.padding(bottom = 4.dp),
-        backgroundColor = MaterialTheme.colorScheme.background
+        backgroundColor = MaterialTheme.colorScheme.background,
+        onClick = { onContactClick() }
     ) {
         Row(
             modifier = Modifier

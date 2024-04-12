@@ -14,11 +14,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.ContactItem
 
 @Composable
-fun PaymentScreen() {
+fun PaymentScreen(navController: NavController) {
     val users: List<User> = listOf(
         User(login = "joaovf", completeName = "João Vitor Freitas"),
         User(login = "cicerom", completeName = "Cícero Moura"),
@@ -40,7 +42,10 @@ fun PaymentScreen() {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(users) { user ->
-                    ContactItem(username = user.login, completeName = user.completeName)
+                    ContactItem(username = user.login, completeName = user.completeName) {
+                        navController
+                            .navigate("${BottomNavScreen.Transaction.route}/${user.login}")
+                    }
                 }
             }
         }

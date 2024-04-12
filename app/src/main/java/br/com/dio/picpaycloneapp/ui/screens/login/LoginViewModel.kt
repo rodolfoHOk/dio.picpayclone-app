@@ -25,7 +25,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     private val _action = MutableSharedFlow<LoginUiAction>()
     val action: SharedFlow<LoginUiAction> = _action
 
-    var username by mutableStateOf("")
+    var username by mutableStateOf("joaovf")
         private set
 
     var password by mutableStateOf("")
