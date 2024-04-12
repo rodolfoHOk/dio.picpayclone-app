@@ -2,9 +2,9 @@ package br.com.dio.picpaycloneapp.ui.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -41,12 +41,13 @@ fun TransactionTextField(
         textStyle = TextStyle(fontWeight = FontWeight.Bold),
         modifier = modifier,
         shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colorScheme.surface,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
             focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
             unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface,
-            unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
             focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
             cursorColor = MaterialTheme.colorScheme.tertiary,
         )
     )

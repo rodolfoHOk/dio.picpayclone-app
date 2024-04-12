@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,12 +44,13 @@ fun StyledTextField(
             .padding(16.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colorScheme.background,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
             focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.surface,
-            unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface,
             focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
             cursorColor = MaterialTheme.colorScheme.tertiary,
         )
     )

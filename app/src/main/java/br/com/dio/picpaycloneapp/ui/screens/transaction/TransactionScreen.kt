@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.RadioButton
-import androidx.compose.material.RadioButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -96,12 +96,13 @@ fun TransactionScreen(
                                 },
                                 maxLines = 1,
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                colors = TextFieldDefaults.textFieldColors(
-                                    backgroundColor = Color.Transparent,
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
                                     focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
                                     unfocusedIndicatorColor = MaterialTheme.colorScheme.surface,
-                                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
                                     focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
                                     cursorColor = MaterialTheme.colorScheme.tertiary,
                                 )
                             )
@@ -148,56 +149,54 @@ fun TransactionScreen(
                     }
 
                     if (transactionUiState.value.paymentType == PaymentType.CREDIT_CARD) {
-                        Box {
-                            Column {
+                        Column {
+                            TransactionTextField(
+                                label = "Número do Cartão",
+                                keyboardType = KeyboardType.Number,
+                                value = transactionUiState.value.cardNumber,
+                                onValueChange = {
+                                    transactionViewModel.updateCardNumber(it)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                            )
+
+                            TransactionTextField(
+                                label = "Nome do Títular",
+                                value = transactionUiState.value.holderName,
+                                onValueChange = {
+                                    transactionViewModel.updateHolderName(it)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                            )
+
+                            Row {
                                 TransactionTextField(
-                                    label = "Número do Cartão",
+                                    label = "Vencimento",
                                     keyboardType = KeyboardType.Number,
-                                    value = transactionUiState.value.cardNumber,
+                                    value = transactionUiState.value.expirationDate,
                                     onValueChange = {
-                                        transactionViewModel.updateCardNumber(it)
+                                        transactionViewModel.updateExpirationDate(it)
                                     },
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                                        .fillMaxWidth(0.5f)
+                                        .padding(start = 16.dp, end = 8.dp, top = 16.dp)
                                 )
 
                                 TransactionTextField(
-                                    label = "Nome do Títular",
-                                    value = transactionUiState.value.holderName,
+                                    label = "CVC",
+                                    keyboardType = KeyboardType.Number,
+                                    value = transactionUiState.value.securityCode,
                                     onValueChange = {
-                                        transactionViewModel.updateHolderName(it)
+                                        transactionViewModel.updateSecurityCode(it)
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                                        .padding(start = 8.dp, end = 16.dp, top = 16.dp)
                                 )
-
-                                Row {
-                                    TransactionTextField(
-                                        label = "Vencimento",
-                                        keyboardType = KeyboardType.Number,
-                                        value = transactionUiState.value.expirationDate,
-                                        onValueChange = {
-                                            transactionViewModel.updateExpirationDate(it)
-                                        },
-                                        modifier = Modifier
-                                            .fillMaxWidth(0.5f)
-                                            .padding(start = 16.dp, end = 8.dp, top = 16.dp)
-                                    )
-
-                                    TransactionTextField(
-                                        label = "CVC",
-                                        keyboardType = KeyboardType.Number,
-                                        value = transactionUiState.value.securityCode,
-                                        onValueChange = {
-                                            transactionViewModel.updateSecurityCode(it)
-                                        },
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(start = 8.dp, end = 16.dp, top = 16.dp)
-                                    )
-                                }
                             }
                         }
                     } else {
@@ -228,16 +227,14 @@ fun TransactionScreen(
                         .fillMaxWidth()
                         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
                     ),
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
                         text = "Transferir".uppercase(),
-                        style = TextStyle(
-                            color = MaterialTheme.colorScheme.background,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        style = TextStyle(fontWeight = FontWeight.SemiBold)
                     )
                 }
             }

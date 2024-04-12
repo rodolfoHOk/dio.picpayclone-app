@@ -14,8 +14,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -77,7 +77,8 @@ fun LoginScreen(
                     .padding(16.dp)
                     .fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    MaterialTheme.colorScheme.background
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onBackground
                 ),
                 shape = RoundedCornerShape(8.dp)
             ) {

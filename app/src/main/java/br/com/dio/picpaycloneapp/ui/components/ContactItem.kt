@@ -1,7 +1,6 @@
 package br.com.dio.picpaycloneapp.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,9 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,14 +22,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import br.com.dio.picpaycloneapp.R
 
-@OptIn(ExperimentalMaterialApi::class)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactItem(username: String, completeName: String, onContactClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        elevation = 2.dp,
+        elevation = CardDefaults.cardElevation(2.dp),
         modifier = Modifier.padding(bottom = 4.dp),
-        backgroundColor = MaterialTheme.colorScheme.background,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        ),
         onClick = { onContactClick() }
     ) {
         Row(
