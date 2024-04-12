@@ -60,13 +60,13 @@ fun LoginScreen(
 
             StyledTextField(
                 label = "Usuário",
-                value = loginViewModel.username,
+                value = loginUiState.value.username,
                 onValueChange = { loginViewModel.updateUsername(it) }
             )
 
             StyledTextField(
                 label = "Senha",
-                value = loginViewModel.password,
+                value = loginUiState.value.password,
                 onValueChange = { loginViewModel.updatePassword(it) },
                 keyboardType = KeyboardType.Password
             )

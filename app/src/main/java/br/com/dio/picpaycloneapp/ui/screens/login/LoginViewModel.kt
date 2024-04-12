@@ -1,8 +1,5 @@
 package br.com.dio.picpaycloneapp.ui.screens.login
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.dio.picpaycloneapp.data.LoggedUser
@@ -19,24 +16,28 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor() : ViewModel() {
 
-    private val _state = MutableStateFlow(LoginUiState(isLoading = false))
+    private val _state = MutableStateFlow(
+        LoginUiState(
+            isLoading = false,
+            username = "joaovf",
+            password = ""
+        )
+    )
     val state: StateFlow<LoginUiState> get() = _state
 
     private val _action = MutableSharedFlow<LoginUiAction>()
     val action: SharedFlow<LoginUiAction> = _action
 
-    var username by mutableStateOf("joaovf")
-        private set
-
-    var password by mutableStateOf("")
-        private set
-
     fun updateUsername(username: String) {
-        this.username = username
+        _state.update { currentState ->
+            currentState.copy(username = username)
+        }
     }
 
     fun updatePassword(password: String) {
-        this.password = password
+        _state.update { currentState ->
+            currentState.copy(password = password)
+        }
     }
 
     fun login() {
@@ -44,9 +45,9 @@ class LoginViewModel @Inject constructor() : ViewModel() {
             currentState.copy(isLoading = true)
         }
 
-        if (username == "joaovf") {
+        if (state.value.username == "joaovf") {
             LoggedUser.user = User(
-                login = username,
+                login = state.value.username,
                 completeName = "João Vitor Freitas",
                 balance = 500.00,
             )
@@ -68,7 +69,9 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 }
 
 data class LoginUiState(
-    val isLoading: Boolean
+    val isLoading: Boolean,
+    var username: String,
+    var password: String
 )
 
 sealed interface LoginUiAction {

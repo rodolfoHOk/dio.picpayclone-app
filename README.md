@@ -29,4 +29,4 @@
 
 - Android Studio / Menu / Run / Run 'app'
 
-#### stop parte 6 até o final
+#### stop parte ? até o final
