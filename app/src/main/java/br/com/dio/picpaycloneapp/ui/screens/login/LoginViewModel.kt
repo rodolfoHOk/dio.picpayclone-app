@@ -49,17 +49,17 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
             viewModelScope.launch {
                 runCatching {
                     apiService.getUserByLogin(state.value.username)
-                }.onFailure { throwable ->
-                    when (throwable) {
+                }.onFailure { exception ->
+                    when (exception) {
                         is RetrofitHttpException -> {
-                            when (throwable.code()) {
+                            when (exception.code()) {
                                 HttpURLConnection.HTTP_NOT_FOUND -> {
                                     sendAction(LoginUiAction.LoginError("Credenciais inválidas"))
                                 }
                                 else -> sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
                             }
                         }
-                        else -> throw throwable
+                        else -> throw exception
                     }
                 }.onSuccess { user ->
                     LoggedUser.user = user

@@ -53,7 +53,10 @@ fun TransactionScreen(
         LaunchedEffect(Unit) {
             transactionViewModel.action.collect { action ->
                 when (action) {
-                    is TransactionUiAction.TransactionSuccess -> {}
+                    is TransactionUiAction.TransactionSuccess -> {
+                        snackbarHostState.showSnackbar(action.message)
+                        navController.navigate(BottomNavScreen.Payment.route)
+                    }
                     is TransactionUiAction.TransactionError -> {
                         snackbarHostState.showSnackbar(action.message)
                     }
@@ -234,7 +237,7 @@ fun TransactionScreen(
                 }
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { transactionViewModel.transfer(destinationUser) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
