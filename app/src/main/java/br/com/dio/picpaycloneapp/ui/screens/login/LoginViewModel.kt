@@ -3,7 +3,7 @@ package br.com.dio.picpaycloneapp.ui.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.dio.picpaycloneapp.data.LoggedUser
-import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,18 +11,14 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
+import retrofit2.HttpException as RetrofitHttpException
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
 
-    private val _state = MutableStateFlow(
-        LoginUiState(
-            isLoading = false,
-            username = "joaovf",
-            password = ""
-        )
-    )
+    private val _state = MutableStateFlow(LoginUiState())
     val state: StateFlow<LoginUiState> get() = _state
 
     private val _action = MutableSharedFlow<LoginUiAction>()
@@ -45,24 +41,38 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     }
 
     fun login() {
-        _state.update { currentState ->
-            currentState.copy(isLoading = true)
-        }
+        try {
+            _state.update { currentState ->
+                currentState.copy(isLoading = true)
+            }
 
-        if (state.value.username == "joaovf") {
-            LoggedUser.user = User(
-                login = state.value.username,
-                completeName = "João Vitor Freitas",
-                balance = 500.00,
-            )
-            sendAction(LoginUiAction.LoginSuccess("Login efetuado com sucesso!"))
-            return
+            viewModelScope.launch {
+                runCatching {
+                    apiService.getUserByLogin(state.value.username)
+                }.onFailure { throwable ->
+                    when (throwable) {
+                        is RetrofitHttpException -> {
+                            when (throwable.code()) {
+                                HttpURLConnection.HTTP_NOT_FOUND -> {
+                                    sendAction(LoginUiAction.LoginError("Credenciais inválidas"))
+                                }
+                                else -> sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
+                            }
+                        }
+                        else -> throw throwable
+                    }
+                }.onSuccess { user ->
+                    LoggedUser.user = user
+                    sendAction(LoginUiAction.LoginSuccess("Login efetuado com sucesso"))
+                }
+            }
+        } catch (exception: Exception) {
+            sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
+        } finally {
+            _state.update { currentState ->
+                currentState.copy(isLoading = false)
+            }
         }
-
-        _state.update { currentState ->
-            currentState.copy(isLoading = false)
-        }
-        sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
     }
 
     private fun sendAction(loginUiAction: LoginUiAction) {
@@ -73,9 +83,9 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 }
 
 data class LoginUiState(
-    val isLoading: Boolean,
-    var username: String,
-    var password: String
+    val isLoading: Boolean = false,
+    var username: String = "joaovf",
+    var password: String = ""
 )
 
 sealed interface LoginUiAction {

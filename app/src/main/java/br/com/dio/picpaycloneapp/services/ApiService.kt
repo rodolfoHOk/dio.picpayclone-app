@@ -8,6 +8,9 @@ import retrofit2.http.Query
 
 interface ApiService {
 
+    @GET("/users/{login}")
+    suspend fun getUserByLogin(@Path("login") login: String) : User
+
     @GET("/users/contacts")
     suspend fun getUserContacts(@Query("login") login: String) : List<User>
 
