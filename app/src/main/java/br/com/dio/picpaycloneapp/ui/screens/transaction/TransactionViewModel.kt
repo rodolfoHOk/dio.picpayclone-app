@@ -2,6 +2,9 @@ package br.com.dio.picpaycloneapp.ui.screens.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.dio.picpaycloneapp.data.Balance
+import br.com.dio.picpaycloneapp.data.LoggedUser
+import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,13 +15,30 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TransactionViewModel @Inject constructor() : ViewModel() {
+class TransactionViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
 
     private val _state = MutableStateFlow(TransactionUiState())
     val state: StateFlow<TransactionUiState> = _state
 
     private val _action = MutableSharedFlow<TransactionUiAction>()
     val action: SharedFlow<TransactionUiAction> = _action
+
+    init {
+        fetchLoggedUserBalance()
+    }
+
+    private fun fetchLoggedUserBalance() = viewModelScope.launch {
+        try {
+            val login = LoggedUser.user.login
+            val balance = apiService.getUserBalance(login)
+            _state.update { currentState ->
+                currentState.copy(balance = balance)
+            }
+        } catch (exception: Exception) {
+            sendAction(TransactionUiAction
+                .TransactionError("Ops!, erro ao tentar buscar saldo do usuário logado."))
+        }
+    }
 
     fun updateAmount(amount: String) {
         if (amount.length <= 12) {
@@ -85,7 +105,8 @@ data class TransactionUiState(
     val cardNumber: String = "",
     val holderName: String = "",
     val expirationDate: String = "",
-    val securityCode: String = ""
+    val securityCode: String = "",
+    val balance: Balance = Balance()
 )
 
 sealed interface TransactionUiAction {

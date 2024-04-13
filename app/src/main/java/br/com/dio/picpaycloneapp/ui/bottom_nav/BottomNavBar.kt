@@ -43,7 +43,9 @@ fun BottomNavBar(navController: NavController) {
                 icon = {
                     Icon(
                         painterResource(id = screen.iconId),
-                        contentDescription = stringResource(id = screen.resourceId)
+                        contentDescription = stringResource(id = screen.resourceId),
+                        tint = if (isSelectedItem) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 label = {

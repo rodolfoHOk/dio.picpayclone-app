@@ -15,6 +15,7 @@ import br.com.dio.picpaycloneapp.ui.screens.payment.PaymentScreen
 import br.com.dio.picpaycloneapp.ui.screens.payment.PaymentViewModel
 import br.com.dio.picpaycloneapp.ui.screens.profile.ProfileScreen
 import br.com.dio.picpaycloneapp.ui.screens.transaction.TransactionScreen
+import br.com.dio.picpaycloneapp.ui.screens.transaction.TransactionViewModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
@@ -42,9 +43,11 @@ fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: (
             val gson: Gson = GsonBuilder().create()
             val userJson = navBackStackEntry.arguments?.getString("destinationUser")
             val user = gson.fromJson(userJson, User::class.java)
+            val transactionViewModel = hiltViewModel<TransactionViewModel>()
             TransactionScreen(
                 navController = navController,
-                destinationUser = user
+                destinationUser = user,
+                transactionViewModel = transactionViewModel
             )
         }
     }

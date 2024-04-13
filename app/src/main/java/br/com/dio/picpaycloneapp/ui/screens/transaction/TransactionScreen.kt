@@ -19,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,10 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.dio.picpaycloneapp.R
 import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField
 import java.text.DecimalFormat
@@ -41,12 +42,24 @@ import java.text.DecimalFormat
 fun TransactionScreen(
     navController: NavController,
     destinationUser: User?,
-    transactionViewModel: TransactionViewModel = viewModel()
+    transactionViewModel: TransactionViewModel
 ) {
     destinationUser?.let {
         val transactionUiState = transactionViewModel.state.collectAsState()
 
         val decimalFormat = DecimalFormat("#,###.00")
+
+        val snackbarHostState = LocalSnackbarHostState.current
+        LaunchedEffect(Unit) {
+            transactionViewModel.action.collect { action ->
+                when (action) {
+                    is TransactionUiAction.TransactionSuccess -> {}
+                    is TransactionUiAction.TransactionError -> {
+                        snackbarHostState.showSnackbar(action.message)
+                    }
+                }
+            }
+        }
 
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -206,7 +219,10 @@ fun TransactionScreen(
                             )
 
                             Text(
-                                text = "R$ ${decimalFormat.format(destinationUser.balance)}",
+                                text = "R$ ${
+                                    decimalFormat
+                                        .format(transactionUiState.value.balance.balance)
+                                }",
                                 modifier = Modifier.padding(start = 16.dp),
                                 style = TextStyle(
                                     fontWeight = FontWeight.SemiBold,
@@ -224,7 +240,7 @@ fun TransactionScreen(
                         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary,
-                        contentColor = MaterialTheme.colorScheme.onTertiary
+                        contentColor = MaterialTheme.colorScheme.background
                     ),
                     shape = RoundedCornerShape(4.dp)
                 ) {
