@@ -22,13 +22,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.dio.picpaycloneapp.data.LoggedUser
 import br.com.dio.picpaycloneapp.ui.components.TransactionItem
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
-fun HomeScreen(goToLogin: () -> Unit, homeViewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(goToLogin: () -> Unit, homeViewModel: HomeViewModel) {
     if (LoggedUser.isNotLoggedUser()) {
         goToLogin()
     }

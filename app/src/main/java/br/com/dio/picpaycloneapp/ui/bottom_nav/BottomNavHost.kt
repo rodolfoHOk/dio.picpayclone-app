@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.ui.screens.home.HomeScreen
+import br.com.dio.picpaycloneapp.ui.screens.home.HomeViewModel
 import br.com.dio.picpaycloneapp.ui.screens.payment.PaymentScreen
 import br.com.dio.picpaycloneapp.ui.screens.payment.PaymentViewModel
 import br.com.dio.picpaycloneapp.ui.screens.profile.ProfileScreen
@@ -27,7 +28,8 @@ fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: (
         modifier = modifier
     ) {
         composable(route = BottomNavScreen.Home.route) {
-            HomeScreen(goToLogin = goToLogin)
+            val homeViewModel = hiltViewModel<HomeViewModel>()
+            HomeScreen(goToLogin = goToLogin, homeViewModel = homeViewModel)
         }
         composable(route = BottomNavScreen.Payment.route) {
             val paymentViewModel = hiltViewModel<PaymentViewModel>()
