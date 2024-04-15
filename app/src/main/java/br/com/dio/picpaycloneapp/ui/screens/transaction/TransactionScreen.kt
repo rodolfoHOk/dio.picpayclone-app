@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.dio.picpaycloneapp.R
 import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
@@ -57,7 +58,12 @@ fun TransactionScreen(
                 when (action) {
                     is TransactionUiAction.TransactionSuccess -> {
                         snackbarHostState.showSnackbar(action.message)
-                        navController.navigate(BottomNavScreen.Payment.route)
+                        navController.navigate(BottomNavScreen.Payment.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = false
+                            }
+                            launchSingleTop = true
+                        }
                     }
 
                     is TransactionUiAction.TransactionError -> {
