@@ -26,12 +26,7 @@ class HomeViewModel @Inject constructor(private val apiService: ApiService) : Vi
     private val _action = MutableSharedFlow<HomeUiAction>()
     val action: SharedFlow<HomeUiAction> = _action
 
-    init {
-        fetchLoggerUserBalance()
-        fetchLoggerUserTransactions()
-    }
-
-    private fun fetchLoggerUserBalance() {
+    fun fetchLoggerUserBalance() {
         try {
             _state.update { currentState ->
                 currentState.copy(isLoadingBalance = true)
@@ -89,7 +84,7 @@ class HomeViewModel @Inject constructor(private val apiService: ApiService) : Vi
         }
     }
 
-    private fun fetchLoggerUserTransactions() {
+    fun fetchLoggerUserTransactions() {
         try {
             _state.update { currentState ->
                 currentState.copy(isLoadingTransactions = true)

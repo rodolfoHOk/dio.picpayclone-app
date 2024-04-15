@@ -30,8 +30,12 @@ import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
 fun HomeScreen(goToLogin: () -> Unit, homeViewModel: HomeViewModel) {
+
     if (LoggedUser.isNotLoggedUser()) {
         goToLogin()
+    } else {
+        homeViewModel.fetchLoggerUserBalance()
+        homeViewModel.fetchLoggerUserTransactions()
     }
 
     val homeUiState = homeViewModel.state.collectAsState()
