@@ -1,15 +1,15 @@
 package br.com.dio.picpaycloneapp.data
 
 data class PageTransaction(
-    val content: List<Transaction>,
-    val empty: Boolean,
-    val first: Boolean,
-    val last: Boolean,
-    val number: Int,
-    val numberOfElements: Int,
-    val pageable: Pageable,
-    val size: Int,
-    val sort: Sort,
-    val totalElements: Int,
-    val totalPages: Int
+    val content: List<Transaction> = listOf(),
+    val empty: Boolean = true,
+    val first: Boolean = true,
+    val last: Boolean = true,
+    val number: Int = 0,
+    val numberOfElements: Int = 0,
+    val pageable: Pageable = Pageable(),
+    val size: Int = 0,
+    val sort: Sort = Sort(),
+    val totalElements: Int = 0,
+    val totalPages: Int = 0
 )

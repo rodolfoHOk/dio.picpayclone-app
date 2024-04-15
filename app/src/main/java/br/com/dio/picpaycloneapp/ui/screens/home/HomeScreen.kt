@@ -83,7 +83,7 @@ fun HomeScreen(goToLogin: () -> Unit, homeViewModel: HomeViewModel = viewModel()
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    items(homeUiState.value.transactions) { transaction ->
+                    items(homeUiState.value.pageTransactions.content) { transaction ->
                         TransactionItem(transaction)
                     }
                 }
