@@ -34,12 +34,7 @@ fun LoginScreen(
         viewModelStoreOwner = LocalContext.current as ComponentActivity
     )
 ) {
-
     val loginUiState = loginViewModel.state.collectAsState()
-
-    fun onLoginClick() {
-        loginViewModel.login()
-    }
 
     Box(
         modifier = Modifier
@@ -72,7 +67,7 @@ fun LoginScreen(
             )
 
             Button(
-                onClick = { onLoginClick() },
+                onClick = { loginViewModel.login() },
                 Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),

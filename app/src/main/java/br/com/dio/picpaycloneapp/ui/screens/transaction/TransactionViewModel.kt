@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import br.com.dio.picpaycloneapp.data.Balance
 import br.com.dio.picpaycloneapp.data.BannerCard
 import br.com.dio.picpaycloneapp.data.CreditCard
-import br.com.dio.picpaycloneapp.data.LoggedUser
 import br.com.dio.picpaycloneapp.data.Transaction
 import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.exceptions.ValidationException
@@ -31,16 +30,11 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
     private val _action = MutableSharedFlow<TransactionUiAction>()
     val action: SharedFlow<TransactionUiAction> = _action
 
-    init {
-        fetchLoggedUserBalance()
-    }
-
-    private fun fetchLoggedUserBalance() = viewModelScope.launch {
+    fun fetchLoggedUserBalance(login: String) = viewModelScope.launch {
         try {
-            val login = LoggedUser.user.login
             val balance = apiService.getUserBalance(login)
             _state.update { currentState ->
-                currentState.copy(balance = balance)
+                currentState.copy(balance = balance, isUserBalance = true)
             }
         } catch (exception: Exception) {
             sendAction(
@@ -96,22 +90,22 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
         }
     }
 
-    fun transfer(destinationUser: User, saveCreditCard: Boolean = true) {
+    fun transfer(originUser: User, destinationUser: User, saveCreditCard: Boolean = true) {
         try {
             _state.update { currentState ->
                 currentState.copy(isLoading = true)
             }
 
             val transaction = if (state.value.paymentType == PaymentType.CREDIT_CARD) {
-                createTransactionWithCreditCard(destinationUser, saveCreditCard)
+                createTransactionWithCreditCard(originUser, destinationUser, saveCreditCard)
             } else {
                 if (state.value.amount.isEmpty()) {
                     throw ValidationException("Valor da transação deve ser positivo.")
                 }
-                if (_state.value.amount.toDouble() > LoggedUser.user.balance) {
+                if (_state.value.amount.toDouble() > originUser.balance) {
                     throw ValidationException("Saldo insuficiente.")
                 }
-                createTransaction(destinationUser)
+                createTransaction(originUser, destinationUser)
             }
 
             viewModelScope.launch {
@@ -127,7 +121,6 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
                                 }
 
                                 HttpURLConnection.HTTP_NOT_FOUND -> {
-                                    val message = exception.response()?.message().toString()
                                     sendAction(TransactionUiAction
                                         .TransactionError("Dados inválidos"))
                                 }
@@ -176,18 +169,19 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
     }
 
     private fun createTransactionWithCreditCard(
+        originUser: User,
         destinationUser: User,
         saveCreditCard: Boolean
     ): Transaction {
-        val transaction = createTransaction(destinationUser)
-        return transaction.copy(creditCard = createCreditCard(saveCreditCard))
+        val transaction = createTransaction(originUser, destinationUser)
+        return transaction.copy(creditCard = createCreditCard(originUser, saveCreditCard))
     }
 
-    private fun createTransaction(destinationUser: User): Transaction {
+    private fun createTransaction(originUser: User, destinationUser: User): Transaction {
         validateTransaction()
         return Transaction(
             code = Transaction.generateHash(),
-            origin = LoggedUser.user,
+            origin = originUser,
             destination = destinationUser,
             dateTime = OffsetDateTime.now().toString(),
             isCreditCard = state.value.paymentType == PaymentType.CREDIT_CARD,
@@ -197,12 +191,12 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
     }
 
     private fun validateTransaction() {
-        if (state.value.amount.length == 0 || state.value.amount.toDouble() <= 0.00) {
+        if (state.value.amount.isEmpty() || state.value.amount.toDouble() <= 0.00) {
             throw ValidationException("Valor da transação deve ser positivo.")
         }
     }
 
-    private fun createCreditCard(save: Boolean): CreditCard {
+    private fun createCreditCard(originUser: User, save: Boolean): CreditCard {
         validateCreditCard()
         return CreditCard(
             banner = BannerCard.VISA,
@@ -210,7 +204,7 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
             holderName = state.value.holderName,
             expirationDate = state.value.expirationDate,
             securityCode = state.value.securityCode,
-            user = LoggedUser.user,
+            user = originUser,
             tokenNumber = "",
             isSaved = save
         )
@@ -251,7 +245,8 @@ data class TransactionUiState(
     val holderName: String = "",
     val expirationDate: String = "",
     val securityCode: String = "",
-    val balance: Balance = Balance()
+    val balance: Balance = Balance(),
+    val isUserBalance: Boolean = false
 )
 
 sealed interface TransactionUiAction {

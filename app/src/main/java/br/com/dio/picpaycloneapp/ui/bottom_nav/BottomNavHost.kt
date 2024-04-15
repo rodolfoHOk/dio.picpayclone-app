@@ -33,10 +33,10 @@ fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: (
         }
         composable(route = BottomNavScreen.Payment.route) {
             val paymentViewModel = hiltViewModel<PaymentViewModel>()
-            PaymentScreen(navController = navController, paymentViewModel)
+            PaymentScreen(navController = navController, paymentViewModel = paymentViewModel)
         }
         composable(route = BottomNavScreen.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
         }
         composable(
             route = "${BottomNavScreen.Transaction.route}/{destinationUser}",

@@ -1,5 +1,6 @@
 package br.com.dio.picpaycloneapp.ui.screens.transaction
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,12 +27,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.dio.picpaycloneapp.R
@@ -39,16 +42,34 @@ import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField
+import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
 fun TransactionScreen(
     navController: NavController,
     destinationUser: User?,
-    transactionViewModel: TransactionViewModel
+    transactionViewModel: TransactionViewModel,
+    loginViewModel: LoginViewModel = viewModel(
+        viewModelStoreOwner = LocalContext.current as ComponentActivity
+    )
 ) {
+    val loginState = loginViewModel.state.collectAsState()
+    val transactionUiState = transactionViewModel.state.collectAsState()
+
+    val loggedUser: User = if (loginState.value.isLoggedUser) {
+        val loggedUser = loginState.value.loggedUser!!
+        if (!transactionUiState.value.isUserBalance) {
+            transactionViewModel.fetchLoggedUserBalance(loggedUser.login)
+        }
+        loggedUser
+    } else {
+        navController.navigate(BottomNavScreen.Home.route)
+        return
+    }
+
     destinationUser?.let {
-        val transactionUiState = transactionViewModel.state.collectAsState()
+
 
         val snackbarHostState = LocalSnackbarHostState.current
         LaunchedEffect(Unit) {
@@ -244,7 +265,7 @@ fun TransactionScreen(
                 }
 
                 Button(
-                    onClick = { transactionViewModel.transfer(destinationUser) },
+                    onClick = { transactionViewModel.transfer(loggedUser, destinationUser) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),

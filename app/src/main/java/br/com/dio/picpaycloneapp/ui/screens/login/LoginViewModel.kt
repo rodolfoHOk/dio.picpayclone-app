@@ -2,7 +2,7 @@ package br.com.dio.picpaycloneapp.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.dio.picpaycloneapp.data.LoggedUser
+import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -62,7 +62,9 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
                         else -> throw exception
                     }
                 }.onSuccess { user ->
-                    LoggedUser.user = user
+                    _state.update { currentState ->
+                        currentState.copy(loggedUser = user, isLoggedUser = true)
+                    }
                     sendAction(LoginUiAction.LoginSuccess("Login efetuado com sucesso"))
                 }
             }
@@ -75,6 +77,12 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
         }
     }
 
+    fun logout() {
+        _state.update { currentState ->
+            currentState.copy(loggedUser = null, isLoggedUser = false)
+        }
+    }
+
     private fun sendAction(loginUiAction: LoginUiAction) {
         viewModelScope.launch {
             _action.emit(loginUiAction)
@@ -84,8 +92,10 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
 
 data class LoginUiState(
     val isLoading: Boolean = false,
-    var username: String = "joaovf",
-    var password: String = ""
+    val username: String = "joaovf",
+    val password: String = "",
+    val loggedUser: User? = null,
+    val isLoggedUser : Boolean = false
 )
 
 sealed interface LoginUiAction {

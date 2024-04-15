@@ -1,5 +1,6 @@
 package br.com.dio.picpaycloneapp.ui.screens.home
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,23 +20,33 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.dio.picpaycloneapp.data.LoggedUser
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.components.TransactionItem
+import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
-fun HomeScreen(goToLogin: () -> Unit, homeViewModel: HomeViewModel) {
+fun HomeScreen(
+    goToLogin: () -> Unit,
+    homeViewModel: HomeViewModel,
+    loginViewModel: LoginViewModel = viewModel(
+        viewModelStoreOwner = LocalContext.current as ComponentActivity
+    )
+) {
+    val loginState = loginViewModel.state.collectAsState()
 
-    if (LoggedUser.isNotLoggedUser()) {
-        goToLogin()
+    if (loginState.value.isLoggedUser) {
+        val loggedUserLogin = loginState.value.loggedUser!!.login
+        homeViewModel.fetchLoggerUserBalance(loggedUserLogin)
+        homeViewModel.fetchLoggerUserTransactions(loggedUserLogin)
     } else {
-        homeViewModel.fetchLoggerUserBalance()
-        homeViewModel.fetchLoggerUserTransactions()
+        goToLogin()
     }
 
     val homeUiState = homeViewModel.state.collectAsState()
@@ -43,7 +54,7 @@ fun HomeScreen(goToLogin: () -> Unit, homeViewModel: HomeViewModel) {
     val snackbarHostState = LocalSnackbarHostState.current
     LaunchedEffect(Unit) {
         homeViewModel.action.collect { action ->
-            when(action) {
+            when (action) {
                 is HomeUiAction.BalanceError -> {
                     snackbarHostState.showSnackbar(action.message)
                 }

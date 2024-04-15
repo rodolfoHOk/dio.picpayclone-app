@@ -1,5 +1,6 @@
 package br.com.dio.picpaycloneapp.ui.screens.profile
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,18 +13,43 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import br.com.dio.picpaycloneapp.R
+import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
+import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    navController: NavController, loginViewModel: LoginViewModel = viewModel(
+        viewModelStoreOwner = LocalContext.current as ComponentActivity
+    )
+) {
+    val loginState = loginViewModel.state.collectAsState()
+
+    val loggedUser: User = if (loginState.value.isLoggedUser) {
+        loginState.value.loggedUser!!
+    } else {
+        navController.navigate(BottomNavScreen.Home.route)
+        return
+    }
+
+    fun onExit() {
+        loginViewModel.logout()
+        navController.navigate(BottomNavScreen.Home.route)
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -43,13 +69,13 @@ fun ProfileScreen() {
                 )
 
                 Text(
-                    text = "login",
+                    text = loggedUser.login,
                     modifier = Modifier.padding(top = 4.dp),
                     style = TextStyle(fontWeight = FontWeight.Bold)
                 )
 
                 Text(
-                    text = "completeName",
+                    text = loggedUser.completeName,
                     modifier = Modifier.padding(top = 8.dp),
                     style = TextStyle(fontWeight = FontWeight.Normal)
                 )
@@ -62,7 +88,7 @@ fun ProfileScreen() {
             )
 
             Text(
-                text = "login",
+                text = loggedUser.login,
                 modifier = Modifier.padding(top = 8.dp, start = 16.dp),
             )
 
@@ -75,7 +101,7 @@ fun ProfileScreen() {
             )
 
             Text(
-                text = "phoneNumber",
+                text = loggedUser.phoneNumber,
                 modifier = Modifier.padding(top = 8.dp, start = 16.dp),
             )
 
@@ -88,25 +114,28 @@ fun ProfileScreen() {
             )
 
             Text(
-                text = "email",
+                text = loggedUser.email,
                 modifier = Modifier.padding(top = 8.dp, start = 16.dp),
             )
 
             Divider(modifier = Modifier.padding(top = 16.dp))
 
             TextButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    onExit()
+                },
                 modifier = Modifier.padding(top = 4.dp, start = 4.dp)
-                ) {
+            ) {
                 Text(
                     text = "Sair".uppercase(),
-                    style = TextStyle(color = Color.Red,
+                    style = TextStyle(
+                        color = Color.Red,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
             }
-            
+
             Divider(modifier = Modifier.padding(top = 4.dp))
         }
     }

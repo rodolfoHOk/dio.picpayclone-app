@@ -3,7 +3,6 @@ package br.com.dio.picpaycloneapp.ui.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.dio.picpaycloneapp.data.Balance
-import br.com.dio.picpaycloneapp.data.LoggedUser
 import br.com.dio.picpaycloneapp.data.PageTransaction
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,13 +25,11 @@ class HomeViewModel @Inject constructor(private val apiService: ApiService) : Vi
     private val _action = MutableSharedFlow<HomeUiAction>()
     val action: SharedFlow<HomeUiAction> = _action
 
-    fun fetchLoggerUserBalance() {
+    fun fetchLoggerUserBalance(login: String) {
         try {
             _state.update { currentState ->
                 currentState.copy(isLoadingBalance = true)
             }
-
-            val login = LoggedUser.user.login
 
             viewModelScope.launch {
                 runCatching {
@@ -84,13 +81,11 @@ class HomeViewModel @Inject constructor(private val apiService: ApiService) : Vi
         }
     }
 
-    fun fetchLoggerUserTransactions() {
+    fun fetchLoggerUserTransactions(login: String) {
         try {
             _state.update { currentState ->
                 currentState.copy(isLoadingTransactions = true)
             }
-
-            val login = LoggedUser.user.login
 
             viewModelScope.launch {
                 runCatching {
