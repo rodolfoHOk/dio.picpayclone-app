@@ -36,5 +36,3 @@
 ## Backend
 
 [Repositório Github](https://github.com/rodolfoHOk/dio.picpayclone-backend)
-
-#### stop parte 11 3:10
