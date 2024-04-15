@@ -94,7 +94,10 @@ fun PaymentScreen(
                         ContactItem(username = user.login, completeName = user.completeName) {
                             val userJson = gson.toJson(user, User::class.java)
                             navController.navigate(
-                                "${BottomNavScreen.Transaction.route}/$userJson"
+                                BottomNavScreen.Transaction.route.replace(
+                                    "{destinationUser}",
+                                    userJson.toString()
+                                )
                             )
                         }
                     }

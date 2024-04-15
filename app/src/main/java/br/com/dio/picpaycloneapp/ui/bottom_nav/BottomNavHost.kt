@@ -39,7 +39,7 @@ fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: (
             ProfileScreen(navController = navController)
         }
         composable(
-            route = "${BottomNavScreen.Transaction.route}/{destinationUser}",
+            route = BottomNavScreen.Transaction.route,
             arguments = listOf(navArgument("destinationUser") { type = NavType.StringType })
         ) { navBackStackEntry ->
             val gson: Gson = GsonBuilder().create()
