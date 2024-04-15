@@ -8,7 +8,7 @@ data class Transaction(
     val destination: User = User(),
     val dateTime: String = "",
     val amount: Double = 0.0,
-    val creditCard: CreditCard = CreditCard(),
+    val creditCard: CreditCard? = null,
     val isCreditCard: Boolean = false
 ) {
     companion object {

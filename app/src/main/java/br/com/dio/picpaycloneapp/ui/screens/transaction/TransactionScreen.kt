@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.RadioButton
@@ -17,6 +18,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,6 +59,7 @@ fun TransactionScreen(
                         snackbarHostState.showSnackbar(action.message)
                         navController.navigate(BottomNavScreen.Payment.route)
                     }
+
                     is TransactionUiAction.TransactionError -> {
                         snackbarHostState.showSnackbar(action.message)
                     }
@@ -245,12 +248,16 @@ fun TransactionScreen(
                         containerColor = MaterialTheme.colorScheme.tertiary,
                         contentColor = MaterialTheme.colorScheme.background
                     ),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(4.dp),
+                    enabled = !transactionUiState.value.isLoading
                 ) {
-                    Text(
-                        text = "Transferir".uppercase(),
-                        style = TextStyle(fontWeight = FontWeight.SemiBold)
-                    )
+                    if (transactionUiState.value.isLoading)
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    else
+                        Text(
+                            text = "Transferir".uppercase(),
+                            style = TextStyle(fontWeight = FontWeight.SemiBold)
+                        )
                 }
             }
         }

@@ -98,10 +98,14 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
 
     fun transfer(destinationUser: User, saveCreditCard: Boolean = true) {
         try {
+            _state.update { currentState ->
+                currentState.copy(isLoading = true)
+            }
+
             val transaction = if (state.value.paymentType == PaymentType.CREDIT_CARD) {
                 createTransactionWithCreditCard(destinationUser, saveCreditCard)
             } else {
-                if (state.value.amount.length == 0) {
+                if (state.value.amount.isEmpty()) {
                     throw ValidationException("Valor da transação deve ser positivo.")
                 }
                 if (_state.value.amount.toDouble() > LoggedUser.user.balance) {
@@ -164,6 +168,10 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
                     sendAction(TransactionUiAction.TransactionError("Erro ao realizar transação."))
                 }
             }
+        } finally {
+            _state.update { currentState ->
+                currentState.copy(isLoading = false)
+            }
         }
     }
 
@@ -183,7 +191,8 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
             destination = destinationUser,
             dateTime = OffsetDateTime.now().toString(),
             isCreditCard = state.value.paymentType == PaymentType.CREDIT_CARD,
-            amount = state.value.amount.toDouble()
+            amount = state.value.amount.toDouble(),
+            creditCard = null
         )
     }
 
