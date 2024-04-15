@@ -136,6 +136,10 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
 
                         else -> throw exception
                     }
+
+                    _state.update { currentState ->
+                        currentState.copy(isLoading = false)
+                    }
                 }.onSuccess { transaction ->
                     sendAction(
                         TransactionUiAction
@@ -145,6 +149,8 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
                                 }"
                             )
                     )
+
+                    cleanForm()
                 }
             }
         } catch (exception: Throwable) {
@@ -161,7 +167,7 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
                     sendAction(TransactionUiAction.TransactionError("Erro ao realizar transação."))
                 }
             }
-        } finally {
+
             _state.update { currentState ->
                 currentState.copy(isLoading = false)
             }
@@ -222,6 +228,19 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
         }
         if (state.value.securityCode.length != 3) {
             throw ValidationException("CVC deve ter três digitos.")
+        }
+    }
+
+    private fun cleanForm() {
+        _state.update { currentState ->
+            currentState.copy(
+                isLoading = false,
+                amount = "",
+                cardNumber = "",
+                holderName = "",
+                expirationDate = "",
+                securityCode = "",
+            )
         }
     }
 
