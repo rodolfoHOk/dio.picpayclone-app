@@ -18,6 +18,6 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 data class HomeUiState(
     val isLoadingBalance: Boolean = false,
     val isLoadingTransactions: Boolean = false,
-    val balance: Balance? = null,
+    val balance: Balance = Balance(),
     val transactions: List<Transaction> = listOf()
 )

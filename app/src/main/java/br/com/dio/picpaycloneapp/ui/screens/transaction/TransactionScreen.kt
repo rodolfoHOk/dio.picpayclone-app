@@ -39,7 +39,7 @@ import br.com.dio.picpaycloneapp.data.User
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField
-import java.text.DecimalFormat
+import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
 fun TransactionScreen(
@@ -49,8 +49,6 @@ fun TransactionScreen(
 ) {
     destinationUser?.let {
         val transactionUiState = transactionViewModel.state.collectAsState()
-
-        val decimalFormat = DecimalFormat("#,###.00")
 
         val snackbarHostState = LocalSnackbarHostState.current
         LaunchedEffect(Unit) {
@@ -232,7 +230,7 @@ fun TransactionScreen(
 
                             Text(
                                 text = "R$ ${
-                                    decimalFormat
+                                    decimalFormatter
                                         .format(transactionUiState.value.balance.balance)
                                 }",
                                 modifier = Modifier.padding(start = 16.dp),

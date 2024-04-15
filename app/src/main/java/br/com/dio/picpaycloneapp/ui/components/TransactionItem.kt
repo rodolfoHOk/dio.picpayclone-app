@@ -20,9 +20,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.dio.picpaycloneapp.data.Transaction
+import br.com.dio.picpaycloneapp.ui.utils.dateFormatter
+import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
+import java.time.OffsetDateTime
 
 @Composable
-fun TransactionItem() {
+fun TransactionItem(transaction: Transaction) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(2.dp),
@@ -49,15 +53,15 @@ fun TransactionItem() {
                         )
                 ) {
                     Text(
-                        text = "V",
+                        text = transaction.origin.completeName.slice(IntRange(0, 0)),
                         color = MaterialTheme.colorScheme.background,
                         fontSize = 18.sp,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                
+
                 Text(
-                    text = "João Vitor Freitas",
+                    text = transaction.origin.completeName,
                     modifier = Modifier.padding(start = 8.dp),
                     style = TextStyle(fontWeight = FontWeight.Bold)
                 )
@@ -69,7 +73,7 @@ fun TransactionItem() {
                 )
 
                 Text(
-                    text = "Cícero Moura",
+                    text = transaction.destination.completeName,
                     modifier = Modifier.padding(start = 4.dp),
                     style = TextStyle(fontWeight = FontWeight.Bold)
                 )
@@ -81,7 +85,9 @@ fun TransactionItem() {
                     .padding(start = 16.dp, top = 8.dp, bottom = 16.dp),
             ) {
                 Text(
-                    text = "R$ 10,00",
+                    text = "R$ ${
+                        decimalFormatter.format(transaction.amount)
+                    }",
                     style = TextStyle(fontWeight = FontWeight.Bold)
                 )
 
@@ -92,7 +98,7 @@ fun TransactionItem() {
                 )
 
                 Text(
-                    text = "dia 15/04/2024",
+                    text = "dia ${dateFormatter.format(OffsetDateTime.parse(transaction.dateTime))}",
                     modifier = Modifier.padding(start = 8.dp),
                     style = TextStyle(fontWeight = FontWeight.Normal)
                 )
