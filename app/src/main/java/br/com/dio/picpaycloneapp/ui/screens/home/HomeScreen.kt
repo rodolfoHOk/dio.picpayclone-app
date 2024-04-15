@@ -15,6 +15,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.dio.picpaycloneapp.data.LoggedUser
+import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.components.TransactionItem
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
@@ -33,6 +35,21 @@ fun HomeScreen(goToLogin: () -> Unit, homeViewModel: HomeViewModel) {
     }
 
     val homeUiState = homeViewModel.state.collectAsState()
+
+    val snackbarHostState = LocalSnackbarHostState.current
+    LaunchedEffect(Unit) {
+        homeViewModel.action.collect { action ->
+            when(action) {
+                is HomeUiAction.BalanceError -> {
+                    snackbarHostState.showSnackbar(action.message)
+                }
+
+                is HomeUiAction.TransactionsError -> {
+                    snackbarHostState.showSnackbar(action.message)
+                }
+            }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
