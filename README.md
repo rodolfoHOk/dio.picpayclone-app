@@ -14,9 +14,11 @@
 - androidx.navigation:navigation-compose
 - androidx.compose.material:material
 - com.google.dagger:hilt-android
+- androidx.hilt:hilt-navigation-compose
 - com.google.code.gson:gson
 - com.squareup.retrofit2:retrofit
 - com.squareup.retrofit2:converter-gson
+- androidx.paging:paging-compose
 
 ## Telas
 
@@ -26,6 +28,7 @@
 
 ### Requisitos
 
+- Backend rodando com dados iniciais carregados
 - Android Studio
 - Dispositivo Android Virtual
 
@@ -35,8 +38,4 @@
 
 ## Backend
 
-[Repositório Github](https://github.com/rodolfoHOk/dio.picpayclone-backend)
-
-#### Temp
-
-- https://medium.com/@diousk507/things-you-may-want-to-know-about-paging-compose-bab56c0e1a8a
+- [Repositório Github](https://github.com/rodolfoHOk/dio.picpayclone-backend)
