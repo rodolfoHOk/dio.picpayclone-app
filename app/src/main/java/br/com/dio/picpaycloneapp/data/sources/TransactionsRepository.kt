@@ -21,7 +21,7 @@ class TransactionsRepository @Inject constructor(private val apiService: ApiServ
     }
 
     companion object {
-        const val NETWORK_PAGE_SIZE = 10
+        const val NETWORK_PAGE_SIZE = 5
     }
 
 }

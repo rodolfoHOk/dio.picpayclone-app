@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import br.com.dio.picpaycloneapp.data.models.Transaction
 import br.com.dio.picpaycloneapp.services.ApiService
+import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -24,6 +25,7 @@ class TransactionsPagingSource(
             val page = params.key ?: API_STARTING_PAGE_INDEX
             val size = params.loadSize
             val pageTransaction = apiService.getTransactions(login, page, size)
+            delay(1000) // for test
             LoadResult.Page(
                 data = pageTransaction.content,
                 prevKey = if (page <= API_STARTING_PAGE_INDEX) null else page - 1,
