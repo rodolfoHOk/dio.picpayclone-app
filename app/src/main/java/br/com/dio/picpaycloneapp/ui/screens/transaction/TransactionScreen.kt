@@ -38,7 +38,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.dio.picpaycloneapp.R
-import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.data.models.User
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField

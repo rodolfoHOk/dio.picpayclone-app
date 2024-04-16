@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.data
+package br.com.dio.picpaycloneapp.data.models
 
 data class Balance(
     val login: String = "",

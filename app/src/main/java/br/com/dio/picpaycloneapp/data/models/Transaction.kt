@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.data
+package br.com.dio.picpaycloneapp.data.models
 
 import java.util.UUID
 

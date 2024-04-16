@@ -1,24 +1,15 @@
 package br.com.dio.picpaycloneapp.ui.screens.home
 
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -27,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
-import br.com.dio.picpaycloneapp.ui.components.TransactionItem
+import br.com.dio.picpaycloneapp.ui.components.MyBalance
+import br.com.dio.picpaycloneapp.ui.components.TransactionList
 import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
-import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
 fun HomeScreen(
@@ -41,15 +32,17 @@ fun HomeScreen(
 ) {
     val loginState = loginViewModel.state.collectAsState()
 
-    if (loginState.value.isLoggedUser) {
+    val loggedUserLogin: String = if (loginState.value.isLoggedUser) {
         val loggedUserLogin = loginState.value.loggedUser!!.login
         homeViewModel.fetchLoggerUserBalance(loggedUserLogin)
-        homeViewModel.fetchLoggerUserTransactions(loggedUserLogin)
+        loggedUserLogin
     } else {
         goToLogin()
+        return
     }
 
     val homeUiState = homeViewModel.state.collectAsState()
+    val transactionsFlow = homeViewModel.getTransactions(loggedUserLogin)
 
     val snackbarHostState = LocalSnackbarHostState.current
     LaunchedEffect(Unit) {
@@ -70,27 +63,10 @@ fun HomeScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Meu saldo",
-                    style = TextStyle(fontSize = 12.sp)
-                )
-
-                Spacer(modifier = Modifier.size(4.dp))
-
-                if (homeUiState.value.isLoadingBalance)
-                    CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
-                else
-                    Text(
-                        text = "R$ ${decimalFormatter.format(homeUiState.value.balance.balance)}",
-                        style = TextStyle(fontWeight = FontWeight.Bold)
-                    )
-            }
+            MyBalance(
+                isLoadingBalance = homeUiState.value.isLoadingBalance,
+                balance = homeUiState.value.balance.balance
+            )
 
             Divider(modifier = Modifier.padding(vertical = 16.dp))
 
@@ -100,24 +76,7 @@ fun HomeScreen(
                 style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
             )
 
-            if (homeUiState.value.isLoadingTransactions)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            else
-                LazyColumn(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    items(homeUiState.value.pageTransactions.content) { transaction ->
-                        TransactionItem(transaction)
-                    }
-                }
+            TransactionList(transactionsFlow = transactionsFlow)
         }
     }
 }

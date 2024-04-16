@@ -2,7 +2,7 @@ package br.com.dio.picpaycloneapp.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.data.models.User
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

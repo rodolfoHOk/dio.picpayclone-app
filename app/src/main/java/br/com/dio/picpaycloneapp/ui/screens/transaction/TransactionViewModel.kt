@@ -2,11 +2,11 @@ package br.com.dio.picpaycloneapp.ui.screens.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.dio.picpaycloneapp.data.Balance
-import br.com.dio.picpaycloneapp.data.BannerCard
-import br.com.dio.picpaycloneapp.data.CreditCard
-import br.com.dio.picpaycloneapp.data.Transaction
-import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.data.models.Balance
+import br.com.dio.picpaycloneapp.data.models.BannerCard
+import br.com.dio.picpaycloneapp.data.models.CreditCard
+import br.com.dio.picpaycloneapp.data.models.Transaction
+import br.com.dio.picpaycloneapp.data.models.User
 import br.com.dio.picpaycloneapp.exceptions.ValidationException
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel

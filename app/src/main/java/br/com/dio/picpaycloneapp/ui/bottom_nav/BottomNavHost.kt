@@ -9,7 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.data.models.User
 import br.com.dio.picpaycloneapp.ui.screens.home.HomeScreen
 import br.com.dio.picpaycloneapp.ui.screens.home.HomeViewModel
 import br.com.dio.picpaycloneapp.ui.screens.payment.PaymentScreen

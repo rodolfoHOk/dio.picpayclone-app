@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.data
+package br.com.dio.picpaycloneapp.data.models
 
 enum class BannerCard(val description: String) {
     VISA("Visa"),

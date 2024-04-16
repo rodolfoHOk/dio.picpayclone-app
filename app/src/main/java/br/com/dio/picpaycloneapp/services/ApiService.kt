@@ -1,9 +1,9 @@
 package br.com.dio.picpaycloneapp.services
 
-import br.com.dio.picpaycloneapp.data.Balance
-import br.com.dio.picpaycloneapp.data.PageTransaction
-import br.com.dio.picpaycloneapp.data.Transaction
-import br.com.dio.picpaycloneapp.data.User
+import br.com.dio.picpaycloneapp.data.models.Balance
+import br.com.dio.picpaycloneapp.data.models.PageTransaction
+import br.com.dio.picpaycloneapp.data.models.Transaction
+import br.com.dio.picpaycloneapp.data.models.User
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -25,5 +25,9 @@ interface ApiService {
     suspend fun makeTransaction(@Body transaction: Transaction): Transaction
 
     @GET("/transactions")
-    suspend fun getTransactions(@Query("login") login: String): PageTransaction
+    suspend fun getTransactions(
+        @Query("login") login: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): PageTransaction
 }

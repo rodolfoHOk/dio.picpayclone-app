@@ -20,14 +20,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.dio.picpaycloneapp.data.Transaction
-import br.com.dio.picpaycloneapp.ui.utils.dateFormatter
+import br.com.dio.picpaycloneapp.data.models.Transaction
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 import br.com.dio.picpaycloneapp.ui.utils.formatDateTime
-import java.time.OffsetDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.time.temporal.Temporal
 
 @Composable
 fun TransactionItem(transaction: Transaction) {

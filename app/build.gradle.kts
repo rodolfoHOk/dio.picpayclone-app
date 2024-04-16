@@ -54,6 +54,7 @@ android {
 dependencies {
     val nav_version = "2.7.7"
     val retrofit_version = "2.11.0"
+    val paging_version = "3.2.1"
     val hilt_version = "2.51.1"
 
     implementation(libs.androidx.core.ktx)
@@ -70,6 +71,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
+    implementation("androidx.paging:paging-compose:$paging_version")
     implementation("com.google.dagger:hilt-android:$hilt_version")
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
