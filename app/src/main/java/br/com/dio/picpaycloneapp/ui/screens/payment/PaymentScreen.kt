@@ -1,6 +1,5 @@
 package br.com.dio.picpaycloneapp.ui.screens.payment
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,18 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.dio.picpaycloneapp.data.models.User
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.ContactItem
-import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
@@ -35,25 +31,15 @@ import com.google.gson.GsonBuilder
 fun PaymentScreen(
     navController: NavController,
     paymentViewModel: PaymentViewModel,
-    loginViewModel: LoginViewModel = viewModel(
-        viewModelStoreOwner = LocalContext.current as ComponentActivity
-    )
+    loggedUser: User?
 ) {
-    val loginState = loginViewModel.state.collectAsState()
-    val paymentUiState = paymentViewModel.state.collectAsState()
+    val paymentState = paymentViewModel.state.collectAsState()
 
-    if (loginState.value.isLoggedUser) {
-        if (!paymentUiState.value.isUserContacts) {
-            val loggedUserLogin = loginState.value.loggedUser!!.login
-            paymentViewModel.fetchUserContacts(loggedUserLogin)
+    loggedUser?.let {
+        if (!paymentState.value.isUserContacts) {
+            paymentViewModel.fetchUserContacts(loggedUser.login)
         }
-    } else {
-        navController.navigate(BottomNavScreen.Home.route)
-    }
-
-    val userContacts = paymentUiState.value.contacts
-
-    val gson: Gson = GsonBuilder().create()
+    } ?: navController.navigate(BottomNavScreen.Home.route)
 
     val snackbarHostState = LocalSnackbarHostState.current
     LaunchedEffect(Unit) {
@@ -76,7 +62,7 @@ fun PaymentScreen(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
             )
 
-            if (paymentUiState.value.isLoading)
+            if (paymentState.value.isLoading)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -90,6 +76,9 @@ fun PaymentScreen(
                     modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
+                    val userContacts = paymentState.value.contacts
+                    val gson: Gson = GsonBuilder().create()
+
                     items(userContacts) { user ->
                         ContactItem(username = user.login, completeName = user.completeName) {
                             val userJson = gson.toJson(user, User::class.java)

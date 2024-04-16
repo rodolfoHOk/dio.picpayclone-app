@@ -32,111 +32,99 @@ import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 
 @Composable
 fun ProfileScreen(
-    navController: NavController, loginViewModel: LoginViewModel = viewModel(
-        viewModelStoreOwner = LocalContext.current as ComponentActivity
-    )
+    navController: NavController,
+    loggedUser: User?,
+    logout: () -> Unit
 ) {
-    val loginState = loginViewModel.state.collectAsState()
-
-    val loggedUser: User = if (loginState.value.isLoggedUser) {
-        loginState.value.loggedUser!!
-    } else {
-        navController.navigate(BottomNavScreen.Home.route)
-        return
-    }
-
-    fun onExit() {
-        loginViewModel.logout()
-        navController.navigate(BottomNavScreen.Home.route)
-    }
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
+    loggedUser?.let {
+        Box(modifier = Modifier.fillMaxSize()) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.surface)
-                    .padding(top = 32.dp, bottom = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.fillMaxSize()
             ) {
-                Image(
-                    painter = painterResource(
-                        id = R.drawable.ic_contact
-                    ),
-                    contentDescription = "Avatar",
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .padding(top = 32.dp, bottom = 24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(
+                            id = R.drawable.ic_contact
+                        ),
+                        contentDescription = "Avatar",
+                    )
+
+                    Text(
+                        text = loggedUser.login,
+                        modifier = Modifier.padding(top = 4.dp),
+                        style = TextStyle(fontWeight = FontWeight.Bold)
+                    )
+
+                    Text(
+                        text = loggedUser.completeName,
+                        modifier = Modifier.padding(top = 8.dp),
+                        style = TextStyle(fontWeight = FontWeight.Normal)
+                    )
+                }
+
+                Text(
+                    text = "Meu PicPay",
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp),
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 )
 
                 Text(
                     text = loggedUser.login,
-                    modifier = Modifier.padding(top = 4.dp),
-                    style = TextStyle(fontWeight = FontWeight.Bold)
+                    modifier = Modifier.padding(top = 8.dp, start = 16.dp),
+                )
+
+                Divider(modifier = Modifier.padding(top = 16.dp))
+
+                Text(
+                    text = "Meu número",
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp),
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 )
 
                 Text(
-                    text = loggedUser.completeName,
-                    modifier = Modifier.padding(top = 8.dp),
-                    style = TextStyle(fontWeight = FontWeight.Normal)
+                    text = loggedUser.phoneNumber,
+                    modifier = Modifier.padding(top = 8.dp, start = 16.dp),
                 )
-            }
 
-            Text(
-                text = "Meu PicPay",
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp),
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            )
+                Divider(modifier = Modifier.padding(top = 16.dp))
 
-            Text(
-                text = loggedUser.login,
-                modifier = Modifier.padding(top = 8.dp, start = 16.dp),
-            )
-
-            Divider(modifier = Modifier.padding(top = 16.dp))
-
-            Text(
-                text = "Meu número",
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp),
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            )
-
-            Text(
-                text = loggedUser.phoneNumber,
-                modifier = Modifier.padding(top = 8.dp, start = 16.dp),
-            )
-
-            Divider(modifier = Modifier.padding(top = 16.dp))
-
-            Text(
-                text = "Meu e-mail",
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp),
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            )
-
-            Text(
-                text = loggedUser.email,
-                modifier = Modifier.padding(top = 8.dp, start = 16.dp),
-            )
-
-            Divider(modifier = Modifier.padding(top = 16.dp))
-
-            TextButton(
-                onClick = {
-                    onExit()
-                },
-                modifier = Modifier.padding(top = 4.dp, start = 4.dp)
-            ) {
                 Text(
-                    text = "Sair".uppercase(),
-                    style = TextStyle(
-                        color = Color.Red,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold
+                    text = "Meu e-mail",
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp),
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                )
+
+                Text(
+                    text = loggedUser.email,
+                    modifier = Modifier.padding(top = 8.dp, start = 16.dp),
+                )
+
+                Divider(modifier = Modifier.padding(top = 16.dp))
+
+                TextButton(
+                    onClick = {
+                        logout()
+                    },
+                    modifier = Modifier.padding(top = 4.dp, start = 4.dp)
+                ) {
+                    Text(
+                        text = "Sair".uppercase(),
+                        style = TextStyle(
+                            color = Color.Red,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     )
-                )
-            }
+                }
 
-            Divider(modifier = Modifier.padding(top = 4.dp))
+                Divider(modifier = Modifier.padding(top = 4.dp))
+            }
         }
-    }
+    } ?: navController.navigate(BottomNavScreen.Home.route)
 }

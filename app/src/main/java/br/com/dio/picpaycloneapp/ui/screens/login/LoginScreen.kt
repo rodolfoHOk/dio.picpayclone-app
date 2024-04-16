@@ -34,7 +34,7 @@ fun LoginScreen(
         viewModelStoreOwner = LocalContext.current as ComponentActivity
     )
 ) {
-    val loginUiState = loginViewModel.state.collectAsState()
+    val loginState = loginViewModel.state.collectAsState()
 
     Box(
         modifier = Modifier
@@ -55,13 +55,13 @@ fun LoginScreen(
 
             StyledTextField(
                 label = "Usuário",
-                value = loginUiState.value.username,
+                value = loginState.value.username,
                 onValueChange = { loginViewModel.updateUsername(it) }
             )
 
             StyledTextField(
                 label = "Senha",
-                value = loginUiState.value.password,
+                value = loginState.value.password,
                 onValueChange = { loginViewModel.updatePassword(it) },
                 keyboardType = KeyboardType.Password
             )
@@ -77,7 +77,7 @@ fun LoginScreen(
                 ),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                if (loginUiState.value.isLoading)
+                if (loginState.value.isLoading)
                     CircularProgressIndicator(modifier = Modifier.size(24.dp))
                 else
                     Text(text = "Entrar".uppercase())

@@ -36,3 +36,7 @@
 ## Backend
 
 [Repositório Github](https://github.com/rodolfoHOk/dio.picpayclone-backend)
+
+#### Temp
+
+- https://medium.com/@diousk507/things-you-may-want-to-know-about-paging-compose-bab56c0e1a8a

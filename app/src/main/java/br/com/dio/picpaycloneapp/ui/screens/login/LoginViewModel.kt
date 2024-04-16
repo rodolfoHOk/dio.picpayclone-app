@@ -95,7 +95,7 @@ data class LoginUiState(
     val username: String = "joaovf",
     val password: String = "",
     val loggedUser: User? = null,
-    val isLoggedUser : Boolean = false
+    val isLoggedUser: Boolean = false
 )
 
 sealed interface LoginUiAction {

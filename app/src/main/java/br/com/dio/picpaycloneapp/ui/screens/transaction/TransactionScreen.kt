@@ -1,6 +1,5 @@
 package br.com.dio.picpaycloneapp.ui.screens.transaction
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,14 +26,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.dio.picpaycloneapp.R
@@ -42,35 +39,24 @@ import br.com.dio.picpaycloneapp.data.models.User
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField
-import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
 fun TransactionScreen(
     navController: NavController,
-    destinationUser: User?,
     transactionViewModel: TransactionViewModel,
-    loginViewModel: LoginViewModel = viewModel(
-        viewModelStoreOwner = LocalContext.current as ComponentActivity
-    )
+    loggedUser: User?,
+    destinationUser: User?,
 ) {
-    val loginState = loginViewModel.state.collectAsState()
-    val transactionUiState = transactionViewModel.state.collectAsState()
+    val transactionState = transactionViewModel.state.collectAsState()
 
-    val loggedUser: User = if (loginState.value.isLoggedUser) {
-        val loggedUser = loginState.value.loggedUser!!
-        if (!transactionUiState.value.isUserBalance) {
+    loggedUser?.let {
+        if (!transactionState.value.isUserBalance) {
             transactionViewModel.fetchLoggedUserBalance(loggedUser.login)
         }
-        loggedUser
-    } else {
-        navController.navigate(BottomNavScreen.Home.route)
-        return
-    }
+    } ?: navController.navigate(BottomNavScreen.Home.route)
 
     destinationUser?.let {
-
-
         val snackbarHostState = LocalSnackbarHostState.current
         LaunchedEffect(Unit) {
             transactionViewModel.action.collect { action ->
@@ -119,7 +105,7 @@ fun TransactionScreen(
                             )
 
                             TextField(
-                                value = transactionUiState.value.amount.toString(),
+                                value = transactionState.value.amount.toString(),
                                 onValueChange = { transactionViewModel.updateAmount(it) },
                                 textStyle = TextStyle(
                                     fontSize = 30.sp,
@@ -135,7 +121,9 @@ fun TransactionScreen(
                                     )
                                 },
                                 maxLines = 1,
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Number
+                                ),
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.Transparent,
                                     unfocusedContainerColor = Color.Transparent,
@@ -156,7 +144,7 @@ fun TransactionScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(
-                                selected = transactionUiState.value.paymentType ==
+                                selected = transactionState.value.paymentType ==
                                         PaymentType.BALANCE,
                                 onClick = {
                                     transactionViewModel.updatePaymentType(PaymentType.BALANCE)
@@ -174,7 +162,7 @@ fun TransactionScreen(
                             modifier = Modifier.padding(start = 20.dp)
                         ) {
                             RadioButton(
-                                selected = transactionUiState.value.paymentType ==
+                                selected = transactionState.value.paymentType ==
                                         PaymentType.CREDIT_CARD,
                                 onClick = {
                                     transactionViewModel.updatePaymentType(PaymentType.CREDIT_CARD)
@@ -188,12 +176,12 @@ fun TransactionScreen(
                         }
                     }
 
-                    if (transactionUiState.value.paymentType == PaymentType.CREDIT_CARD) {
+                    if (transactionState.value.paymentType == PaymentType.CREDIT_CARD) {
                         Column {
                             TransactionTextField(
                                 label = "Número do Cartão",
                                 keyboardType = KeyboardType.Number,
-                                value = transactionUiState.value.cardNumber,
+                                value = transactionState.value.cardNumber,
                                 onValueChange = {
                                     transactionViewModel.updateCardNumber(it)
                                 },
@@ -204,7 +192,7 @@ fun TransactionScreen(
 
                             TransactionTextField(
                                 label = "Nome do Títular",
-                                value = transactionUiState.value.holderName,
+                                value = transactionState.value.holderName,
                                 onValueChange = {
                                     transactionViewModel.updateHolderName(it)
                                 },
@@ -217,7 +205,7 @@ fun TransactionScreen(
                                 TransactionTextField(
                                     label = "Vencimento",
                                     keyboardType = KeyboardType.Number,
-                                    value = transactionUiState.value.expirationDate,
+                                    value = transactionState.value.expirationDate,
                                     onValueChange = {
                                         transactionViewModel.updateExpirationDate(it)
                                     },
@@ -229,7 +217,7 @@ fun TransactionScreen(
                                 TransactionTextField(
                                     label = "CVC",
                                     keyboardType = KeyboardType.Number,
-                                    value = transactionUiState.value.securityCode,
+                                    value = transactionState.value.securityCode,
                                     onValueChange = {
                                         transactionViewModel.updateSecurityCode(it)
                                     },
@@ -252,7 +240,7 @@ fun TransactionScreen(
                             Text(
                                 text = "R$ ${
                                     decimalFormatter
-                                        .format(transactionUiState.value.balance.balance)
+                                        .format(transactionState.value.balance.balance)
                                 }",
                                 modifier = Modifier.padding(start = 16.dp),
                                 style = TextStyle(
@@ -265,7 +253,7 @@ fun TransactionScreen(
                 }
 
                 Button(
-                    onClick = { transactionViewModel.transfer(loggedUser, destinationUser) },
+                    onClick = { transactionViewModel.transfer(loggedUser!!, destinationUser) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
@@ -274,9 +262,9 @@ fun TransactionScreen(
                         contentColor = MaterialTheme.colorScheme.background
                     ),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = !transactionUiState.value.isLoading
+                    enabled = !transactionState.value.isLoading
                 ) {
-                    if (transactionUiState.value.isLoading)
+                    if (transactionState.value.isLoading)
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
                     else
                         Text(

@@ -1,8 +1,12 @@
 package br.com.dio.picpaycloneapp.ui.bottom_nav
 
+import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -12,6 +16,7 @@ import androidx.navigation.navArgument
 import br.com.dio.picpaycloneapp.data.models.User
 import br.com.dio.picpaycloneapp.ui.screens.home.HomeScreen
 import br.com.dio.picpaycloneapp.ui.screens.home.HomeViewModel
+import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 import br.com.dio.picpaycloneapp.ui.screens.payment.PaymentScreen
 import br.com.dio.picpaycloneapp.ui.screens.payment.PaymentViewModel
 import br.com.dio.picpaycloneapp.ui.screens.profile.ProfileScreen
@@ -22,6 +27,12 @@ import com.google.gson.GsonBuilder
 
 @Composable
 fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: () -> Unit) {
+    val loginViewModel: LoginViewModel = viewModel(
+        viewModelStoreOwner = LocalContext.current as ComponentActivity
+    )
+    val loginState = loginViewModel.state.collectAsState()
+    val loggedUser = loginState.value.loggedUser
+
     NavHost(
         navController = navController as NavHostController,
         startDestination = BottomNavScreen.Home.route,
@@ -29,14 +40,24 @@ fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: (
     ) {
         composable(route = BottomNavScreen.Home.route) {
             val homeViewModel = hiltViewModel<HomeViewModel>()
-            HomeScreen(goToLogin = goToLogin, homeViewModel = homeViewModel)
+            HomeScreen(
+                homeViewModel = homeViewModel,
+                loggedUser = loggedUser,
+                goToLogin = goToLogin
+            )
         }
         composable(route = BottomNavScreen.Payment.route) {
             val paymentViewModel = hiltViewModel<PaymentViewModel>()
-            PaymentScreen(navController = navController, paymentViewModel = paymentViewModel)
+            PaymentScreen(
+                navController = navController,
+                paymentViewModel = paymentViewModel,
+                loggedUser = loggedUser
+            )
         }
         composable(route = BottomNavScreen.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController, loggedUser = loggedUser) {
+                loginViewModel.logout()
+            }
         }
         composable(
             route = BottomNavScreen.Transaction.route,
@@ -48,8 +69,9 @@ fun BottomNavHost(navController: NavController, modifier: Modifier, goToLogin: (
             val transactionViewModel = hiltViewModel<TransactionViewModel>()
             TransactionScreen(
                 navController = navController,
-                destinationUser = user,
-                transactionViewModel = transactionViewModel
+                transactionViewModel = transactionViewModel,
+                loggedUser = loggedUser,
+                destinationUser = user
             )
         }
     }
