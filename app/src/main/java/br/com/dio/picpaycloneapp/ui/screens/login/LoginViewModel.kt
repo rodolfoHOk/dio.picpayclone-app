@@ -2,6 +2,8 @@ package br.com.dio.picpaycloneapp.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.dio.picpaycloneapp.data.models.Login
+import br.com.dio.picpaycloneapp.data.models.Token
 import br.com.dio.picpaycloneapp.data.models.User
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,27 +48,12 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
                 currentState.copy(isLoading = true)
             }
 
-            viewModelScope.launch {
-                runCatching {
-                    apiService.getUserByLogin(state.value.username)
-                }.onFailure { exception ->
-                    when (exception) {
-                        is RetrofitHttpException -> {
-                            when (exception.code()) {
-                                HttpURLConnection.HTTP_NOT_FOUND -> {
-                                    sendAction(LoginUiAction.LoginError("Credenciais inválidas"))
-                                }
-                                else -> sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
-                            }
-                        }
-                        else -> throw exception
-                    }
-                }.onSuccess { user ->
-                    _state.update { currentState ->
-                        currentState.copy(loggedUser = user, isLoggedUser = true)
-                    }
-                    sendAction(LoginUiAction.LoginSuccess("Login efetuado com sucesso"))
+            if (isValidLoginForm()) {
+                viewModelScope.launch {
+                    getAccessToken()
                 }
+            } else {
+                TODO("field validation errors")
             }
         } catch (exception: Exception) {
             sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
@@ -83,17 +70,74 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
         }
     }
 
-    private fun sendAction(loginUiAction: LoginUiAction) {
-        viewModelScope.launch {
-            _action.emit(loginUiAction)
-        }
+    private fun sendAction(loginUiAction: LoginUiAction) = viewModelScope.launch {
+        _action.emit(loginUiAction)
     }
+
+    private fun isValidLoginForm(): Boolean {
+        TODO("validate login form fields")
+    }
+
+    private suspend fun getAccessToken() = runCatching {
+        apiService.authenticate(Login(state.value.username, state.value.password))
+    }.onFailure { throwable ->
+        when (throwable) {
+            is RetrofitHttpException -> {
+                when (throwable.code()) {
+                    HttpURLConnection.HTTP_BAD_REQUEST -> {
+                        sendAction(LoginUiAction.LoginError("Credenciais inválidas"))
+                    }
+
+                    else -> sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
+                }
+            }
+
+            else -> throw throwable
+        }
+    }.onSuccess { token ->
+        _state.update { currentState ->
+            currentState.copy(token = token)
+        }
+
+        addAccessTokenInRequests()
+
+        getUserByUsername()
+    }
+
+    private fun addAccessTokenInRequests() {
+        TODO("Add access token in requests")
+    }
+
+    private suspend fun getUserByUsername() = runCatching {
+        apiService.getUserByLogin(state.value.username)
+    }.onFailure { throwable ->
+        when (throwable) {
+            is RetrofitHttpException -> {
+                when (throwable.code()) {
+                    HttpURLConnection.HTTP_NOT_FOUND -> {
+                        sendAction(LoginUiAction.LoginError("Usuário não encontrado!"))
+                    }
+
+                    else -> sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
+                }
+            }
+
+            else -> throw throwable
+        }
+    }.onSuccess { user ->
+        _state.update { currentState ->
+            currentState.copy(loggedUser = user, isLoggedUser = true)
+        }
+        sendAction(LoginUiAction.LoginSuccess("Login efetuado com sucesso"))
+    }
+
 }
 
 data class LoginUiState(
     val isLoading: Boolean = false,
     val username: String = "joaovf",
     val password: String = "",
+    val token: Token? = null,
     val loggedUser: User? = null,
     val isLoggedUser: Boolean = false
 )

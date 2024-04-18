@@ -8,6 +8,7 @@
 - ViewModel
 - Hilt (Dependency Injection)
 - Retrofit (Http Requests)
+- JWT Authentication
 
 ### Bibliotecas adicionais
 
@@ -18,6 +19,7 @@
 - com.google.code.gson:gson
 - com.squareup.retrofit2:retrofit
 - com.squareup.retrofit2:converter-gson
+- com.squareup.okhttp3:logging-interceptor
 - androidx.paging:paging-compose
 
 ## Telas

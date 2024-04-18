@@ -1,7 +1,9 @@
 package br.com.dio.picpaycloneapp.services
 
 import br.com.dio.picpaycloneapp.data.models.Balance
+import br.com.dio.picpaycloneapp.data.models.Login
 import br.com.dio.picpaycloneapp.data.models.PageTransaction
+import br.com.dio.picpaycloneapp.data.models.Token
 import br.com.dio.picpaycloneapp.data.models.Transaction
 import br.com.dio.picpaycloneapp.data.models.User
 import retrofit2.http.Body
@@ -11,6 +13,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+
+    @POST("/authentication")
+    suspend fun authenticate(@Body login: Login) : Token
 
     @GET("/users/{login}")
     suspend fun getUserByLogin(@Path("login") login: String) : User
