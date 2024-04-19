@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.dio.picpaycloneapp.R
-import br.com.dio.picpaycloneapp.ui.components.StyledTextField
+import br.com.dio.picpaycloneapp.ui.components.LoginTextField
 
 @Composable
 fun LoginScreen(
@@ -53,17 +53,21 @@ fun LoginScreen(
                 modifier = Modifier.height(200.dp)
             )
 
-            StyledTextField(
+            LoginTextField(
                 label = "Usuário",
                 value = loginState.value.username,
-                onValueChange = { loginViewModel.updateUsername(it) }
+                onValueChange = { loginViewModel.updateUsername(it) },
+                isError = loginState.value.validationErrors.usernameError.isNotBlank(),
+                errorMessage = loginState.value.validationErrors.usernameError
             )
 
-            StyledTextField(
+            LoginTextField(
                 label = "Senha",
                 value = loginState.value.password,
                 onValueChange = { loginViewModel.updatePassword(it) },
-                keyboardType = KeyboardType.Password
+                keyboardType = KeyboardType.Password,
+                isError = loginState.value.validationErrors.passwordError.isNotBlank(),
+                errorMessage = loginState.value.validationErrors.passwordError
             )
 
             Button(

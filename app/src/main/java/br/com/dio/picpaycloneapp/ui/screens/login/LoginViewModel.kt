@@ -48,12 +48,12 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
                 currentState.copy(isLoading = true)
             }
 
-            if (isValidLoginForm()) {
+            validateForm()
+
+            if (state.value.validationErrors.notHasAnyError) {
                 viewModelScope.launch {
                     getAccessTokenAndLoggedUser()
                 }
-            } else {
-                // TODO field validation errors
             }
         } catch (exception: Exception) {
             sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
@@ -76,9 +76,26 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
         _action.emit(loginUiAction)
     }
 
-    private fun isValidLoginForm(): Boolean {
-        // TODO validate login form fields
-        return true
+    private fun validateForm() {
+        var notHasAnyError = true
+
+        val usernameError = if (state.value.username.length < 3) {
+            notHasAnyError = false
+            "Usuário deve ter ao menos 3 caracteres."
+        } else ""
+
+        val passwordError = if (state.value.password.length < 4) {
+            notHasAnyError = false
+            "Senha deve ter ao menos 4 caracteres."
+        } else ""
+
+        _state.update { currentState ->
+            currentState.copy(validationErrors = ValidationErrors(
+                notHasAnyError = notHasAnyError,
+                usernameError = usernameError,
+                passwordError = passwordError
+            ))
+        }
     }
 
     private suspend fun getAccessTokenAndLoggedUser() = runCatching {
@@ -152,7 +169,14 @@ data class LoginUiState(
     val username: String = "joaovf",
     val password: String = "",
     val loggedUser: User? = null,
-    val isLoggedUser: Boolean = false
+    val isLoggedUser: Boolean = false,
+    val validationErrors: ValidationErrors = ValidationErrors()
+)
+
+data class ValidationErrors(
+    val notHasAnyError: Boolean = true,
+    val usernameError: String = "",
+    val passwordError: String = ""
 )
 
 sealed interface LoginUiAction {
