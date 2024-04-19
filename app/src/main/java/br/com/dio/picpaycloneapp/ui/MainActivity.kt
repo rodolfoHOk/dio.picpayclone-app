@@ -4,14 +4,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -41,7 +50,20 @@ class MainActivity : ComponentActivity() {
                     value = LocalSnackbarHostState provides snackbarHostState
                 ) {
                     Scaffold(snackbarHost = {
-                        SnackbarHost(hostState = snackbarHostState)
+                        SnackbarHost(
+                            hostState = snackbarHostState,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .wrapContentHeight(align = Alignment.Top)
+                        ) { data ->
+                            Snackbar(
+                                snackbarData = data,
+                                modifier = Modifier.padding(16.dp),
+                                containerColor = MaterialTheme.colorScheme.background,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                actionColor = MaterialTheme.colorScheme.error,
+                            )
+                        }
                     }) { paddingValues ->
                         val lifecycleOwner = LocalLifecycleOwner.current
                         val lifecycle = remember(lifecycleOwner) { lifecycleOwner.lifecycle }
@@ -66,7 +88,11 @@ class MainActivity : ComponentActivity() {
                                             }
 
                                             is LoginUiAction.LoginError -> scope.launch {
-                                                snackbarHostState.showSnackbar(action.message)
+                                                snackbarHostState.showSnackbar(
+                                                    message = action.message,
+                                                    actionLabel = "Fechar",
+                                                    duration = SnackbarDuration.Short
+                                                )
                                             }
                                         }
                                     }

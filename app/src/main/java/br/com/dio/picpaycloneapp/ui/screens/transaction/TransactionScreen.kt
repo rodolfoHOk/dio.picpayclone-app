@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -62,7 +63,11 @@ fun TransactionScreen(
             transactionViewModel.action.collect { action ->
                 when (action) {
                     is TransactionUiAction.TransactionSuccess -> {
-                        snackbarHostState.showSnackbar(action.message)
+                        snackbarHostState.showSnackbar(
+                            message = action.message,
+                            duration = SnackbarDuration.Short,
+                            withDismissAction = true
+                        )
                         navController.navigate(BottomNavScreen.Payment.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = false
@@ -72,7 +77,11 @@ fun TransactionScreen(
                     }
 
                     is TransactionUiAction.TransactionError -> {
-                        snackbarHostState.showSnackbar(action.message)
+                        snackbarHostState.showSnackbar(
+                            message = action.message,
+                            actionLabel = "Fechar",
+                            duration = SnackbarDuration.Short
+                        )
                     }
                 }
             }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,11 +38,19 @@ fun HomeScreen(
             homeViewModel.action.collect { action ->
                 when (action) {
                     is HomeUiAction.BalanceError -> {
-                        snackbarHostState.showSnackbar(action.message)
+                        snackbarHostState.showSnackbar(
+                            message = action.message,
+                            actionLabel = "Fechar",
+                            duration = SnackbarDuration.Short
+                        )
                     }
 
                     is HomeUiAction.TransactionsError -> {
-                        snackbarHostState.showSnackbar(action.message)
+                        snackbarHostState.showSnackbar(
+                            message = action.message,
+                            actionLabel = "Fechar",
+                            duration = SnackbarDuration.Short
+                        )
                     }
                 }
             }
