@@ -75,7 +75,8 @@ fun LoginScreen(
                     containerColor = MaterialTheme.colorScheme.background,
                     contentColor = MaterialTheme.colorScheme.onBackground
                 ),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
+                enabled = !loginState.value.isLoading
             ) {
                 if (loginState.value.isLoading)
                     CircularProgressIndicator(modifier = Modifier.size(24.dp))

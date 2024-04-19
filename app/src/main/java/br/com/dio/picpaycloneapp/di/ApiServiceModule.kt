@@ -1,11 +1,14 @@
 package br.com.dio.picpaycloneapp.di
 
+import br.com.dio.picpaycloneapp.data.UserToken
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,17 +30,31 @@ class ApiServiceModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private fun createHttpClient(): OkHttpClient {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+    private val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
 
+    private fun createHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
+            .addInterceptor { chain ->
+                val request = applyToken(chain)
+                chain.proceed(request)
+            }
             .connectTimeout(1, TimeUnit.SECONDS)
             .readTimeout(40, TimeUnit.SECONDS)
             .writeTimeout(40, TimeUnit.SECONDS)
             .build()
+    }
+
+    private fun applyToken(chain: Interceptor.Chain) : Request {
+        if (UserToken.hasToken()) {
+            return chain.request().newBuilder()
+                .addHeader("Authorization", UserToken.bearerToken)
+                .build()
+        }
+        return chain.request()
     }
 
     @Provides

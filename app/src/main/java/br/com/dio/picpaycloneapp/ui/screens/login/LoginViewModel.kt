@@ -3,8 +3,8 @@ package br.com.dio.picpaycloneapp.ui.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.dio.picpaycloneapp.data.models.Login
-import br.com.dio.picpaycloneapp.data.models.Token
 import br.com.dio.picpaycloneapp.data.models.User
+import br.com.dio.picpaycloneapp.data.UserToken
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -50,14 +50,16 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
 
             if (isValidLoginForm()) {
                 viewModelScope.launch {
-                    getAccessToken()
+                    getAccessTokenAndLoggedUser()
                 }
             } else {
-                TODO("field validation errors")
+                // TODO field validation errors
             }
         } catch (exception: Exception) {
             sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
         } finally {
+            logout()
+
             _state.update { currentState ->
                 currentState.copy(isLoading = false)
             }
@@ -75,37 +77,29 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
     }
 
     private fun isValidLoginForm(): Boolean {
-        TODO("validate login form fields")
+        // TODO validate login form fields
+        return true
     }
 
-    private suspend fun getAccessToken() = runCatching {
+    private suspend fun getAccessTokenAndLoggedUser() = runCatching {
         apiService.authenticate(Login(state.value.username, state.value.password))
     }.onFailure { throwable ->
         when (throwable) {
             is RetrofitHttpException -> {
                 when (throwable.code()) {
                     HttpURLConnection.HTTP_BAD_REQUEST -> {
-                        sendAction(LoginUiAction.LoginError("Credenciais inválidas"))
+                        sendAction(LoginUiAction.LoginError("Dados inválidos."))
                     }
 
-                    else -> sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
+                    else -> sendAction(LoginUiAction.LoginError("Erro ao efetuar login."))
                 }
             }
 
             else -> throw throwable
         }
     }.onSuccess { token ->
-        _state.update { currentState ->
-            currentState.copy(token = token)
-        }
-
-        addAccessTokenInRequests()
-
+        UserToken.bearerToken = "${token.type} ${token.token}"
         getUserByUsername()
-    }
-
-    private fun addAccessTokenInRequests() {
-        TODO("Add access token in requests")
     }
 
     private suspend fun getUserByUsername() = runCatching {
@@ -114,11 +108,31 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
         when (throwable) {
             is RetrofitHttpException -> {
                 when (throwable.code()) {
-                    HttpURLConnection.HTTP_NOT_FOUND -> {
-                        sendAction(LoginUiAction.LoginError("Usuário não encontrado!"))
+                    HttpURLConnection.HTTP_BAD_REQUEST -> {
+                        sendAction(LoginUiAction.LoginError("Dados inválidos."))
                     }
 
-                    else -> sendAction(LoginUiAction.LoginError("Erro ao efetuar login!"))
+                    HttpURLConnection.HTTP_NOT_FOUND -> {
+                        sendAction(LoginUiAction.LoginError("Usuário não encontrado."))
+                    }
+
+                    HttpURLConnection.HTTP_UNAUTHORIZED -> {
+                        sendAction(
+                            LoginUiAction
+                                .LoginError("Usuário sem autorização, faça o login.")
+                        )
+                    }
+
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        sendAction(
+                            LoginUiAction
+                                .LoginError(
+                                    "Usuário sem permissão de acesso, faça o login novamente."
+                                )
+                        )
+                    }
+
+                    else -> sendAction(LoginUiAction.LoginError("Erro ao buscar usuário logado."))
                 }
             }
 
@@ -128,7 +142,7 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
         _state.update { currentState ->
             currentState.copy(loggedUser = user, isLoggedUser = true)
         }
-        sendAction(LoginUiAction.LoginSuccess("Login efetuado com sucesso"))
+        sendAction(LoginUiAction.LoginSuccess("Login efetuado com sucesso."))
     }
 
 }
@@ -137,7 +151,6 @@ data class LoginUiState(
     val isLoading: Boolean = false,
     val username: String = "joaovf",
     val password: String = "",
-    val token: Token? = null,
     val loggedUser: User? = null,
     val isLoggedUser: Boolean = false
 )
