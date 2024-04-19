@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -38,23 +38,24 @@ class ApiServiceModule {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
-            .addInterceptor { chain ->
-                val request = applyToken(chain)
-                chain.proceed(request)
-            }
+            .addInterceptor(AuthorizationInterceptor())
             .connectTimeout(1, TimeUnit.SECONDS)
             .readTimeout(40, TimeUnit.SECONDS)
             .writeTimeout(40, TimeUnit.SECONDS)
             .build()
     }
 
-    private fun applyToken(chain: Interceptor.Chain) : Request {
-        if (UserToken.hasToken()) {
-            return chain.request().newBuilder()
-                .addHeader("Authorization", UserToken.bearerToken)
-                .build()
+    inner class AuthorizationInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = if (UserToken.hasToken()) {
+                chain.request().newBuilder()
+                    .addHeader("Authorization", UserToken.bearerToken)
+                    .build()
+            } else chain.request()
+
+            return chain.proceed(request)
         }
-        return chain.request()
+
     }
 
     @Provides
