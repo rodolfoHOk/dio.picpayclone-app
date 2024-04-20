@@ -25,3 +25,9 @@ fun TransactionWithUsersEntity.toModel(): Transaction = Transaction(
     amount = transaction.amount,
     isCreditCard = transaction.isCreditCard
 )
+
+fun List<Transaction>.toEntity() = this.map { transaction -> transaction.toEntity() }
+
+fun List<TransactionWithUsersEntity>.toModel() = this.map { transactionWithUsersEntity ->
+    transactionWithUsersEntity.toModel()
+}
