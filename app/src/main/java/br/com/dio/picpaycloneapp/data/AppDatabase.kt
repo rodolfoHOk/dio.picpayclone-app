@@ -22,9 +22,7 @@ import br.com.dio.picpaycloneapp.data.entities.UserEntity
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun transitionDAO(): TransactionDAO
-
     abstract fun userDAO(): UserDAO
-
     abstract fun userContactsDAO(): UserContactsDAO
 
     companion object {
@@ -41,7 +39,10 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
+            return Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java, DATABASE_NAME
+            )
                 .fallbackToDestructiveMigration()
                 .build()
         }

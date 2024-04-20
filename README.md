@@ -44,4 +44,4 @@
 
 #### temp
 
-- stop part 8 ?
+- stop part 8 10:28

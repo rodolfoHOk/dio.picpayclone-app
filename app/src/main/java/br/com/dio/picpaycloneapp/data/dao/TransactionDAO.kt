@@ -21,11 +21,14 @@ interface TransactionDAO {
     @Query("SELECT * FROM transactions WHERE code = :code")
     fun getByCode(code: String): Flow<TransactionWithUsersEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(transaction: TransactionWithUsersEntity) : Long
+    @Query("Delete FROM transactions")
+    fun clear()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(transactions: List<TransactionWithUsersEntity>)
+    suspend fun insert(transaction: TransactionWithUsersEntity) : Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insetAll(transactions: List<TransactionWithUsersEntity>)
 
     @Delete
     suspend fun delete(transaction: TransactionWithUsersEntity)

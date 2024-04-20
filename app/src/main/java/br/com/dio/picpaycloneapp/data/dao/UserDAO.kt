@@ -21,11 +21,14 @@ interface UserDAO {
     @Query("SELECT * FROM users WHERE login = :login")
     fun getByLogin(login: String): Flow<UserEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(user: UserEntity) : Long
+    @Query("Delete FROM users")
+    fun clear()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(users: List<UserEntity>)
+    suspend fun insert(user: UserEntity) : Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(users: List<UserEntity>)
 
     @Delete
     suspend fun delete(user: UserEntity)
