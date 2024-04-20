@@ -56,6 +56,7 @@ dependencies {
     val retrofit_version = "2.11.0"
     val paging_version = "3.2.1"
     val hilt_version = "2.51.1"
+    val room_version = "2.6.1"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -75,7 +76,11 @@ dependencies {
     implementation("androidx.paging:paging-compose:$paging_version")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("com.google.dagger:hilt-android:$hilt_version")
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+    kapt("androidx.room:room-compiler:$room_version")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

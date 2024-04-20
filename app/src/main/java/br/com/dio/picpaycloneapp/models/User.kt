@@ -2,7 +2,6 @@ package br.com.dio.picpaycloneapp.models
 
 data class User(
     val login: String = "",
-    val password: String = "",
     val email: String = "",
     val completeName: String = "",
     val cpf: String = "",
