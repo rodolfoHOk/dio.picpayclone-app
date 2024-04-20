@@ -20,7 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.dio.picpaycloneapp.data.models.Transaction
+import br.com.dio.picpaycloneapp.models.Transaction
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 import br.com.dio.picpaycloneapp.ui.utils.formatDateTime
 

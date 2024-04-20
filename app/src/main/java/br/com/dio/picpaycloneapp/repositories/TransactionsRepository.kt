@@ -1,9 +1,10 @@
-package br.com.dio.picpaycloneapp.data.sources
+package br.com.dio.picpaycloneapp.repositories
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import br.com.dio.picpaycloneapp.data.models.Transaction
+import br.com.dio.picpaycloneapp.models.Transaction
+import br.com.dio.picpaycloneapp.repositories.sources.TransactionsPagingSource
 import br.com.dio.picpaycloneapp.services.ApiService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

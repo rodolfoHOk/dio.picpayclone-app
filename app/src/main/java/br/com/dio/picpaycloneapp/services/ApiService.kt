@@ -1,11 +1,11 @@
 package br.com.dio.picpaycloneapp.services
 
-import br.com.dio.picpaycloneapp.data.models.Balance
-import br.com.dio.picpaycloneapp.data.models.Login
-import br.com.dio.picpaycloneapp.data.models.PageTransaction
-import br.com.dio.picpaycloneapp.data.models.Token
-import br.com.dio.picpaycloneapp.data.models.Transaction
-import br.com.dio.picpaycloneapp.data.models.User
+import br.com.dio.picpaycloneapp.models.Balance
+import br.com.dio.picpaycloneapp.models.Login
+import br.com.dio.picpaycloneapp.models.PageTransaction
+import br.com.dio.picpaycloneapp.models.Token
+import br.com.dio.picpaycloneapp.models.Transaction
+import br.com.dio.picpaycloneapp.models.User
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

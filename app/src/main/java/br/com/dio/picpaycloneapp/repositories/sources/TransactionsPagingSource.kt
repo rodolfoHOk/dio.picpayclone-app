@@ -1,8 +1,9 @@
-package br.com.dio.picpaycloneapp.data.sources
+package br.com.dio.picpaycloneapp.repositories.sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import br.com.dio.picpaycloneapp.data.models.Transaction
+import br.com.dio.picpaycloneapp.models.Transaction
+import br.com.dio.picpaycloneapp.repositories.TransactionsRepository
 import br.com.dio.picpaycloneapp.services.ApiService
 import kotlinx.coroutines.delay
 import retrofit2.HttpException

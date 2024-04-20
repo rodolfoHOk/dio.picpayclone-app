@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import br.com.dio.picpaycloneapp.data.models.Balance
-import br.com.dio.picpaycloneapp.data.models.Transaction
-import br.com.dio.picpaycloneapp.data.sources.TransactionsRepository
+import br.com.dio.picpaycloneapp.models.Balance
+import br.com.dio.picpaycloneapp.models.Transaction
+import br.com.dio.picpaycloneapp.repositories.TransactionsRepository
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

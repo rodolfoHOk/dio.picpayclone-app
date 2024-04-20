@@ -1,6 +1,6 @@
 package br.com.dio.picpaycloneapp.di
 
-import br.com.dio.picpaycloneapp.data.UserToken
+import br.com.dio.picpaycloneapp.repositories.UserToken
 import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.Module
 import dagger.Provides

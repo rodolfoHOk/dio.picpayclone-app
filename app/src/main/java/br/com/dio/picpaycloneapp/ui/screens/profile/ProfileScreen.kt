@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.dio.picpaycloneapp.R
-import br.com.dio.picpaycloneapp.data.models.User
+import br.com.dio.picpaycloneapp.models.User
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 

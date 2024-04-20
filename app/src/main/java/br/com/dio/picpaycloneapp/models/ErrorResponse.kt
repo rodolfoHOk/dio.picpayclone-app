@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.data.models
+package br.com.dio.picpaycloneapp.models
 
 data class ErrorResponse(
     val field: String,

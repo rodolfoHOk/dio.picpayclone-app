@@ -15,7 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.dio.picpaycloneapp.data.models.User
+import br.com.dio.picpaycloneapp.models.User
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.components.MyBalance
 import br.com.dio.picpaycloneapp.ui.components.TransactionList
