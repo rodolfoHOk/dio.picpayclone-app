@@ -5,12 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import br.com.dio.picpaycloneapp.data.entities.TransactionEntity
+import br.com.dio.picpaycloneapp.data.entities.UserContactCrossRef
 import br.com.dio.picpaycloneapp.data.entities.UserEntity
 
 @Database(
     entities = [
         TransactionEntity::class,
-        UserEntity::class
+        UserEntity::class,
+        UserContactCrossRef::class
     ],
     version = 1
 )
