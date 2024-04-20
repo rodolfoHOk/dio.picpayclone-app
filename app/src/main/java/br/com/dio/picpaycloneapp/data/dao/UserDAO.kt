@@ -10,7 +10,7 @@ import br.com.dio.picpaycloneapp.data.entities.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface UserDao {
+interface UserDAO {
 
     @Query("SELECT * FROM users")
     fun getUsers(): Flow<List<UserEntity>>

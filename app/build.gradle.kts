@@ -75,12 +75,13 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("androidx.paging:paging-compose:$paging_version")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("com.google.dagger:hilt-android:$hilt_version")
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
+    implementation("com.google.dagger:hilt-android:$hilt_version")
 
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
-    kapt("androidx.room:room-compiler:$room_version")
+
+    annotationProcessor("androidx.room:room-compiler:$room_version")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

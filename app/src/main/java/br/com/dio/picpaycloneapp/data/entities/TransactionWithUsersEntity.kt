@@ -9,14 +9,14 @@ data class TransactionWithUsersEntity(
     val transaction: TransactionEntity,
 
     @Relation(
-        parentColumn = "login",
-        entityColumn = "origin"
+        parentColumn = "origin",
+        entityColumn = "login"
     )
     val origin: UserEntity,
 
     @Relation(
-        parentColumn = "login",
-        entityColumn = "destination"
+        parentColumn = "destination",
+        entityColumn = "login"
     )
     val destination: UserEntity
 )
