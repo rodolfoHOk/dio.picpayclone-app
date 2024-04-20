@@ -2,14 +2,14 @@ package br.com.dio.picpaycloneapp.ui.screens.transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.dio.picpaycloneapp.models.Balance
-import br.com.dio.picpaycloneapp.models.BannerCard
-import br.com.dio.picpaycloneapp.models.CreditCard
-import br.com.dio.picpaycloneapp.models.Transaction
-import br.com.dio.picpaycloneapp.models.User
-import br.com.dio.picpaycloneapp.exceptions.ValidationException
-import br.com.dio.picpaycloneapp.repositories.TransactionRepository
-import br.com.dio.picpaycloneapp.repositories.UserRepository
+import br.com.dio.picpaycloneapp.domain.models.Balance
+import br.com.dio.picpaycloneapp.domain.models.BannerCard
+import br.com.dio.picpaycloneapp.domain.models.CreditCard
+import br.com.dio.picpaycloneapp.domain.models.Transaction
+import br.com.dio.picpaycloneapp.domain.models.User
+import br.com.dio.picpaycloneapp.domain.exceptions.ValidationException
+import br.com.dio.picpaycloneapp.domain.repositories.TransactionRepository
+import br.com.dio.picpaycloneapp.domain.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

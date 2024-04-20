@@ -1,0 +1,11 @@
+package br.com.dio.picpaycloneapp.domain.models
+
+data class User(
+    val login: String = "",
+    val email: String = "",
+    val completeName: String = "",
+    val cpf: String = "",
+    val birthday: String = "",
+    val phoneNumber: String = "",
+    var balance: Double = 0.0
+)

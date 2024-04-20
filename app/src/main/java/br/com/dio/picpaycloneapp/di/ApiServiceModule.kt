@@ -1,7 +1,7 @@
 package br.com.dio.picpaycloneapp.di
 
-import br.com.dio.picpaycloneapp.repositories.UserToken
-import br.com.dio.picpaycloneapp.services.ApiService
+import br.com.dio.picpaycloneapp.domain.repositories.UserToken
+import br.com.dio.picpaycloneapp.data.remote.services.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-private const val API_URL = "http://192.168.0.103:8080"
+const val API_URL = "http://192.168.0.103:8080"
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -22,7 +22,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import br.com.dio.picpaycloneapp.models.Transaction
+import br.com.dio.picpaycloneapp.domain.models.Transaction
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import kotlinx.coroutines.flow.Flow
 

@@ -2,11 +2,11 @@ package br.com.dio.picpaycloneapp.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.dio.picpaycloneapp.models.Login
-import br.com.dio.picpaycloneapp.models.User
-import br.com.dio.picpaycloneapp.repositories.AuthenticationRepository
-import br.com.dio.picpaycloneapp.repositories.UserRepository
-import br.com.dio.picpaycloneapp.repositories.UserToken
+import br.com.dio.picpaycloneapp.domain.models.Login
+import br.com.dio.picpaycloneapp.domain.models.User
+import br.com.dio.picpaycloneapp.domain.repositories.AuthenticationRepository
+import br.com.dio.picpaycloneapp.domain.repositories.UserRepository
+import br.com.dio.picpaycloneapp.domain.repositories.UserToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

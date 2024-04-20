@@ -1,7 +1,7 @@
 package br.com.dio.picpaycloneapp.di
 
-import br.com.dio.picpaycloneapp.repositories.TransactionRepository
-import br.com.dio.picpaycloneapp.repositories.impl.TransactionRepositoryImpl
+import br.com.dio.picpaycloneapp.domain.repositories.TransactionRepository
+import br.com.dio.picpaycloneapp.data.repositories.TransactionRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
