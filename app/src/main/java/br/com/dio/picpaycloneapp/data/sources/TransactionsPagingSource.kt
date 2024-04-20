@@ -24,6 +24,7 @@ class TransactionsPagingSource(
         return try {
             val page = params.key ?: API_STARTING_PAGE_INDEX
             val size = params.loadSize
+//            throw IOException("Test") // for test
             val pageTransaction = apiService.getTransactions(login, page, size)
             delay(1000) // for test
             LoadResult.Page(

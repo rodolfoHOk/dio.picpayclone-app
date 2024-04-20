@@ -44,4 +44,4 @@
 
 #### temp
 
-- stop part 6 5:00
+- stop part 7 00:00
