@@ -3,7 +3,7 @@ package br.com.dio.picpaycloneapp.ui.screens.payment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.dio.picpaycloneapp.models.User
-import br.com.dio.picpaycloneapp.services.ApiService
+import br.com.dio.picpaycloneapp.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PaymentViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
+class PaymentViewModel @Inject constructor(
+    private val userRepository: UserRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(PaymentUiState())
     val state: StateFlow<PaymentUiState> = _state
@@ -28,7 +30,7 @@ class PaymentViewModel @Inject constructor(private val apiService: ApiService) :
                 currentState.copy(isLoading = true)
             }
 
-            val userContacts = apiService.getUserContacts(login)
+            val userContacts = userRepository.getUserContacts(login)
 
             _state.update { currentState ->
                 currentState.copy(contacts = userContacts, isUserContacts = true)

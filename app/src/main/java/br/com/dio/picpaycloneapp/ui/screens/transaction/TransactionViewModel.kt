@@ -8,7 +8,8 @@ import br.com.dio.picpaycloneapp.models.CreditCard
 import br.com.dio.picpaycloneapp.models.Transaction
 import br.com.dio.picpaycloneapp.models.User
 import br.com.dio.picpaycloneapp.exceptions.ValidationException
-import br.com.dio.picpaycloneapp.services.ApiService
+import br.com.dio.picpaycloneapp.repositories.TransactionRepository
+import br.com.dio.picpaycloneapp.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,10 @@ import retrofit2.HttpException as RetrofitHttpException
 import javax.inject.Inject
 
 @HiltViewModel
-class TransactionViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
+class TransactionViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val transactionsRepository: TransactionRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(TransactionUiState())
     val state: StateFlow<TransactionUiState> = _state
@@ -32,7 +36,7 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
 
     fun fetchLoggedUserBalance(login: String) = viewModelScope.launch {
         try {
-            val balance = apiService.getUserBalance(login)
+            val balance = userRepository.getUserBalance(login)
             _state.update { currentState ->
                 currentState.copy(balance = balance, isUserBalance = true)
             }
@@ -110,7 +114,7 @@ class TransactionViewModel @Inject constructor(private val apiService: ApiServic
 
             viewModelScope.launch {
                 runCatching {
-                    apiService.makeTransaction(transaction)
+                    transactionsRepository.makeTransaction(transaction)
                 }.onFailure { exception ->
                     when (exception) {
                         is RetrofitHttpException -> {

@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.dio.picpaycloneapp.models.Login
 import br.com.dio.picpaycloneapp.models.User
+import br.com.dio.picpaycloneapp.repositories.AuthenticationRepository
+import br.com.dio.picpaycloneapp.repositories.UserRepository
 import br.com.dio.picpaycloneapp.repositories.UserToken
-import br.com.dio.picpaycloneapp.services.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,10 @@ import retrofit2.HttpException as RetrofitHttpException
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val authenticationRepository: AuthenticationRepository,
+    private val userRepository: UserRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginUiState())
     val state: StateFlow<LoginUiState> get() = _state
@@ -99,7 +103,7 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
     }
 
     private suspend fun getAccessTokenAndLoggedUser() = runCatching {
-        apiService.authenticate(Login(state.value.username, state.value.password))
+        authenticationRepository.authenticate(Login(state.value.username, state.value.password))
     }.onFailure { throwable ->
         when (throwable) {
             is RetrofitHttpException -> {
@@ -120,7 +124,7 @@ class LoginViewModel @Inject constructor(private val apiService: ApiService) : V
     }
 
     private suspend fun getUserByUsername() = runCatching {
-        apiService.getUserByLogin(state.value.username)
+        userRepository.getUserByLogin(state.value.username)
     }.onFailure { throwable ->
         when (throwable) {
             is RetrofitHttpException -> {

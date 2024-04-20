@@ -3,7 +3,6 @@ package br.com.dio.picpaycloneapp.repositories.sources
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import br.com.dio.picpaycloneapp.models.Transaction
-import br.com.dio.picpaycloneapp.repositories.TransactionsRepository
 import br.com.dio.picpaycloneapp.services.ApiService
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
@@ -32,7 +31,7 @@ class TransactionsPagingSource(
                 data = pageTransaction.content,
                 prevKey = if (page <= API_STARTING_PAGE_INDEX) null else page - 1,
                 nextKey = if (page >= pageTransaction.totalPages - 1) null
-                else page + (size / TransactionsRepository.NETWORK_PAGE_SIZE)
+                else page + (size / NETWORK_PAGE_SIZE)
             )
         } catch (exception: IOException) {
             LoadResult.Error(exception)
@@ -43,6 +42,7 @@ class TransactionsPagingSource(
 
     companion object {
         const val API_STARTING_PAGE_INDEX = 0
+        const val NETWORK_PAGE_SIZE = 5
     }
 
 }

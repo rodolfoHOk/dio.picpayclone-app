@@ -6,8 +6,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import br.com.dio.picpaycloneapp.models.Balance
 import br.com.dio.picpaycloneapp.models.Transaction
-import br.com.dio.picpaycloneapp.repositories.TransactionsRepository
-import br.com.dio.picpaycloneapp.services.ApiService
+import br.com.dio.picpaycloneapp.repositories.TransactionRepository
+import br.com.dio.picpaycloneapp.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,8 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val apiService: ApiService,
-    private val transactionsRepository: TransactionsRepository
+    private val userRepository: UserRepository,
+    private val transactionsRepository: TransactionRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
 
             viewModelScope.launch {
                 runCatching {
-                    apiService.getUserBalance(login)
+                    userRepository.getUserBalance(login)
                 }.onFailure { throwable ->
                     when (throwable) {
                         is RetrofitHttpException -> {
