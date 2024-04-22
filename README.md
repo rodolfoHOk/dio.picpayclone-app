@@ -9,6 +9,7 @@
 - Hilt (Dependency Injection)
 - Retrofit (Http Requests)
 - JWT Authentication
+- Room (Local Database)
 
 ### Bibliotecas adicionais
 
@@ -21,6 +22,9 @@
 - com.squareup.retrofit2:converter-gson
 - com.squareup.okhttp3:logging-interceptor
 - androidx.paging:paging-compose
+- androidx.room:room-runtime
+- androidx.room:room-ktx
+- androidx.room:room-paging
 
 ## Telas
 

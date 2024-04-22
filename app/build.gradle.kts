@@ -77,11 +77,11 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-paging:$room_version")
     implementation("com.google.dagger:hilt-android:$hilt_version")
 
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
-
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

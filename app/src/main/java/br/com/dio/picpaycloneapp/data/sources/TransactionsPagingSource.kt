@@ -1,4 +1,4 @@
-package br.com.dio.picpaycloneapp.data.remote.sources
+package br.com.dio.picpaycloneapp.data.sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

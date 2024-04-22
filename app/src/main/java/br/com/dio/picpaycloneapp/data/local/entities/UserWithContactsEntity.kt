@@ -7,12 +7,16 @@ import androidx.room.Relation
 data class UserWithContactsEntity(
 
     @Embedded
-    val user : UserEntity,
+    val user: UserEntity,
 
     @Relation(
-        parentColumn = "userLogin",
-        entityColumn = "contactLogin",
-        associateBy = Junction(UserContactCrossRef::class)
+        parentColumn = "login",
+        entityColumn = "login",
+        associateBy = Junction(
+            UserContactCrossRef::class,
+            parentColumn = "user_login",
+            entityColumn = "contact_login",
+        )
     )
-    val contacts : List<UserEntity>
+    val contacts: List<UserEntity>
 )
