@@ -6,15 +6,14 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import br.com.dio.picpaycloneapp.data.local.entities.UserContactCrossRef
-import br.com.dio.picpaycloneapp.data.local.entities.UserWithContactsEntity
-import kotlinx.coroutines.flow.Flow
+import br.com.dio.picpaycloneapp.data.local.entities.UserEntity
 
 @Dao
 interface UserContactsDAO {
 
     @Transaction
-    @Query("SELECT * FROM users WHERE login = :userLogin")
-    fun getUserContactsByUserLogin(userLogin: String) : Flow<UserWithContactsEntity>
+    @Query("SELECT u.* FROM users_contacts uc INNER JOIN users u ON uc.user_login = u.login WHERE user_login = :userLogin")
+    fun getUserContactsByUserLogin(userLogin: String) : List<UserEntity>
 
     @Query("Delete FROM users_contacts WHERE user_login = :userLogin")
     fun clearByUserLogin(userLogin: String)

@@ -9,6 +9,7 @@ import br.com.dio.picpaycloneapp.domain.models.Transaction
 import br.com.dio.picpaycloneapp.domain.repositories.TransactionRepository
 import br.com.dio.picpaycloneapp.domain.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +39,7 @@ class HomeViewModel @Inject constructor(
                 currentState.copy(isLoadingBalance = true)
             }
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 runCatching {
                     userRepository.getUserBalance(login)
                 }.onFailure { throwable ->
@@ -93,7 +94,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun sendAction(action: HomeUiAction) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _action.emit(action)
         }
     }

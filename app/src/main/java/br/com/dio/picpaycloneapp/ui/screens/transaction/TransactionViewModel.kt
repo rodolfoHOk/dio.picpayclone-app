@@ -11,6 +11,7 @@ import br.com.dio.picpaycloneapp.domain.exceptions.ValidationException
 import br.com.dio.picpaycloneapp.domain.repositories.TransactionRepository
 import br.com.dio.picpaycloneapp.domain.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -34,7 +35,7 @@ class TransactionViewModel @Inject constructor(
     private val _action = MutableSharedFlow<TransactionUiAction>()
     val action: SharedFlow<TransactionUiAction> = _action
 
-    fun fetchLoggedUserBalance(login: String) = viewModelScope.launch {
+    fun fetchLoggedUserBalance(login: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val balance = userRepository.getUserBalance(login)
             _state.update { currentState ->
@@ -112,7 +113,7 @@ class TransactionViewModel @Inject constructor(
                 createTransaction(originUser, destinationUser)
             }
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 runCatching {
                     transactionsRepository.makeTransaction(transaction)
                 }.onFailure { exception ->
@@ -249,7 +250,7 @@ class TransactionViewModel @Inject constructor(
     }
 
     private fun sendAction(transactionUiAction: TransactionUiAction) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _action.emit(transactionUiAction)
         }
     }

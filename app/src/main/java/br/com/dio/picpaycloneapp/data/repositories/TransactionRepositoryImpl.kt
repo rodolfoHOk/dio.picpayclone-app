@@ -25,7 +25,7 @@ class TransactionRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
-//                initialLoadSize = NETWORK_PAGE_SIZE,
+//                initialLoadSize = NETWORK_PAGE_SIZE, // for test
             ),
             pagingSourceFactory = { appDatabase.transitionDAO().getAllByUserLogin(login) },
             remoteMediator = TransactionsMediator(login, apiService, appDatabase)

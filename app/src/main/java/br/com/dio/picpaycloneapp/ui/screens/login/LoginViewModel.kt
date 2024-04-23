@@ -8,6 +8,7 @@ import br.com.dio.picpaycloneapp.domain.repositories.AuthenticationRepository
 import br.com.dio.picpaycloneapp.domain.repositories.UserRepository
 import br.com.dio.picpaycloneapp.domain.repositories.UserToken
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -55,7 +56,7 @@ class LoginViewModel @Inject constructor(
             validateForm()
 
             if (state.value.validationErrors.notHasAnyError) {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     getAccessTokenAndLoggedUser()
                 }
             }
@@ -76,7 +77,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun sendAction(loginUiAction: LoginUiAction) = viewModelScope.launch {
+    private fun sendAction(loginUiAction: LoginUiAction) = viewModelScope.launch(Dispatchers.IO) {
         _action.emit(loginUiAction)
     }
 

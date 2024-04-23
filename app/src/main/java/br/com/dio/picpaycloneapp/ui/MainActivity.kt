@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import br.com.dio.picpaycloneapp.ui.screens.login.LoginUiAction
 import br.com.dio.picpaycloneapp.ui.screens.login.LoginViewModel
 import br.com.dio.picpaycloneapp.ui.theme.PicPayCloneAppTheme
+import br.com.dio.picpaycloneapp.utils.InternetConnection
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,8 +37,12 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     private val loginViewModel by viewModels<LoginViewModel>();
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        InternetConnection.registerNetworkCallback(applicationContext)
+
         setContent {
             PicPayCloneAppTheme {
                 val mainNavController = rememberNavController()

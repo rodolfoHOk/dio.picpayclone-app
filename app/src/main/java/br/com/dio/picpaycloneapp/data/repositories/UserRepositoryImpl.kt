@@ -4,10 +4,12 @@ import androidx.room.withTransaction
 import br.com.dio.picpaycloneapp.data.local.AppDatabase
 import br.com.dio.picpaycloneapp.data.local.entities.UserContactCrossRef
 import br.com.dio.picpaycloneapp.data.local.mappers.toEntity
+import br.com.dio.picpaycloneapp.data.local.mappers.toModel
 import br.com.dio.picpaycloneapp.domain.models.Balance
 import br.com.dio.picpaycloneapp.domain.models.User
 import br.com.dio.picpaycloneapp.domain.repositories.UserRepository
 import br.com.dio.picpaycloneapp.data.remote.services.ApiService
+import br.com.dio.picpaycloneapp.utils.InternetConnection
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -24,22 +26,31 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserContacts(login: String): List<User> {
-        val contacts = apiService.getUserContacts(login)
-        appDatabase.withTransaction {
-            appDatabase.userContactsDAO().clearByUserLogin(login)
+        val userContacts = if (InternetConnection.Status.isAvailable &&
+            InternetConnection.Status.hasInternet
+        ) {
+            val contacts = apiService.getUserContacts(login)
+            appDatabase.withTransaction {
+                appDatabase.userContactsDAO().clearByUserLogin(login)
 
-            contacts.forEach { user ->
-                val userEntity = user.toEntity()
-                appDatabase.userDAO().insert(userEntity)
-                appDatabase.userContactsDAO().insert(
-                    UserContactCrossRef(
-                        userLogin = login,
-                        contactLogin = userEntity.login
+                contacts.forEach { user ->
+                    val userEntity = user.toEntity()
+                    appDatabase.userDAO().insert(userEntity)
+                    appDatabase.userContactsDAO().insert(
+                        UserContactCrossRef(
+                            userLogin = login,
+                            contactLogin = userEntity.login
+                        )
                     )
-                )
+                }
             }
+            contacts
+        } else {
+            val usersEntity = appDatabase.userContactsDAO().getUserContactsByUserLogin(login)
+            val userContacts = usersEntity.map { userEntity -> userEntity.toModel() }
+            userContacts
         }
-        return contacts
+        return userContacts
     }
 
 }

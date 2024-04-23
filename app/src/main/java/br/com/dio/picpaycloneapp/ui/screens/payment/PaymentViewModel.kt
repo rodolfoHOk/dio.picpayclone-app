@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.dio.picpaycloneapp.domain.models.User
 import br.com.dio.picpaycloneapp.domain.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -24,7 +25,7 @@ class PaymentViewModel @Inject constructor(
     private val _action = MutableSharedFlow<PaymentUiAction>()
     val action: SharedFlow<PaymentUiAction> = _action
 
-    fun fetchUserContacts(login: String) = viewModelScope.launch {
+    fun fetchUserContacts(login: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             _state.update { currentState ->
                 currentState.copy(isLoading = true)
@@ -45,7 +46,7 @@ class PaymentViewModel @Inject constructor(
     }
 
     private fun sendAction(paymentUiAction: PaymentUiAction) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _action.emit(paymentUiAction)
         }
     }
