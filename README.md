@@ -26,6 +26,16 @@
 - androidx.room:room-ktx
 - androidx.room:room-paging
 
+## Melhorias ou mudanças em relação ao desafio proposto
+
+- Uso do Jetpack Compose ao invés de XML
+- Uso do Navigation Compose
+- Uso do Hilt ao invés do Koin
+- Uso do Hilt com Navigation Compose
+- Uso do Paging com Compose para paginação dos dados de transações
+- Uso do Room com Paging para cache dos dados de transações vindos da API
+- Separação um camadas data, domain e ui
+
 ## Telas
 
 ![Telas](/files/aplicativo-telas.png)
@@ -45,7 +55,3 @@
 ## Backend
 
 - [Repositório Github](https://github.com/rodolfoHOk/dio.picpayclone-backend)
-
-#### temp
-
-- stop part 8 10:28
