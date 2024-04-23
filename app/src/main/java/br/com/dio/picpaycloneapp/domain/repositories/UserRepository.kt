@@ -6,7 +6,7 @@ import br.com.dio.picpaycloneapp.domain.models.User
 interface UserRepository {
 
     suspend fun getUserBalance(login: String) : Balance
-    suspend fun getUserByLogin(username: String) : User
+    suspend fun getUserByLogin(login: String) : User
     suspend fun getUserContacts(login: String): List<User>
 
 }
