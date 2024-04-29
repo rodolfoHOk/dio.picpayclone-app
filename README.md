@@ -38,7 +38,12 @@
 
 ## Telas
 
-![Telas](/files/aplicativo-telas.png)
+<img src="https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dio-picpay-clone-app-01.png" alt="PicPay Clone App Imagem 01" height="400" />
+<img src="https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dio-picpay-clone-app-02.png" alt="PicPay Clone App Imagem 02" height="400" />
+<img src="https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dio-picpay-clone-app-03.png" alt="PicPay Clone App Imagem 03" height="400" />
+<img src="https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dio-picpay-clone-app-04.png" alt="PicPay Clone App Imagem 04" height="400" />
+<img src="https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dio-picpay-clone-app-05.png" alt="PicPay Clone App Imagem 05" height="400" />
+<img src="https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dio-picpay-clone-app-06.png" alt="PicPay Clone App Imagem 06" height="400" />
 
 ## Rodar
 
