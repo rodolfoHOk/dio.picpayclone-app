@@ -21,6 +21,7 @@ fun TransactionTextField(
     label: String,
     value: String,
     onValueChange: (text: String) -> Unit,
+    visualTransformation: VisualTransformation? = VisualTransformation.None,
     keyboardType: KeyboardType? = KeyboardType.Text,
 ) {
     TextField(
@@ -29,9 +30,10 @@ fun TransactionTextField(
         else KeyboardOptions(
             keyboardType = KeyboardType.Text
         ),
-        visualTransformation = if (keyboardType == KeyboardType.Password)
-            PasswordVisualTransformation()
-        else VisualTransformation.None,
+        visualTransformation = visualTransformation
+            ?: if (keyboardType == KeyboardType.Password)
+                PasswordVisualTransformation()
+            else VisualTransformation.None,
         label = {
             Text(label)
         },

@@ -40,6 +40,8 @@ import br.com.dio.picpaycloneapp.domain.models.User
 import br.com.dio.picpaycloneapp.ui.LocalSnackbarHostState
 import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField
+import br.com.dio.picpaycloneapp.ui.utils.CreditCardMaskTransformation
+import br.com.dio.picpaycloneapp.ui.utils.ExpiryDateMaskTransformation
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
@@ -194,6 +196,7 @@ fun TransactionScreen(
                                 onValueChange = {
                                     transactionViewModel.updateCardNumber(it)
                                 },
+                                visualTransformation = CreditCardMaskTransformation(),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
@@ -218,6 +221,7 @@ fun TransactionScreen(
                                     onValueChange = {
                                         transactionViewModel.updateExpirationDate(it)
                                     },
+                                    visualTransformation = ExpiryDateMaskTransformation(),
                                     modifier = Modifier
                                         .fillMaxWidth(0.5f)
                                         .padding(start = 16.dp, end = 8.dp, top = 16.dp)
