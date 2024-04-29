@@ -196,7 +196,7 @@ class TransactionViewModel @Inject constructor(
             destination = destinationUser,
             dateTime = OffsetDateTime.now().toString(),
             isCreditCard = state.value.paymentType == PaymentType.CREDIT_CARD,
-            amount = state.value.amount.toDouble(),
+            amount = state.value.amount.toDouble() / 100,
             creditCard = null
         )
     }

@@ -42,6 +42,7 @@ import br.com.dio.picpaycloneapp.ui.bottom_nav.BottomNavScreen
 import br.com.dio.picpaycloneapp.ui.components.TransactionTextField
 import br.com.dio.picpaycloneapp.ui.utils.CreditCardMaskTransformation
 import br.com.dio.picpaycloneapp.ui.utils.ExpiryDateMaskTransformation
+import br.com.dio.picpaycloneapp.ui.utils.RealCurrencyMaskTransformation
 import br.com.dio.picpaycloneapp.ui.utils.decimalFormatter
 
 @Composable
@@ -132,6 +133,7 @@ fun TransactionScreen(
                                     )
                                 },
                                 maxLines = 1,
+                                visualTransformation = RealCurrencyMaskTransformation(),
                                 keyboardOptions = KeyboardOptions(
                                     keyboardType = KeyboardType.Number
                                 ),
